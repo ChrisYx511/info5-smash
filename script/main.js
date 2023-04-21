@@ -15,17 +15,83 @@ canvas.style.margin = "auto"
 // Movement and player
 let activeArea = {}
 /*deplacement du joueur*/
-let keysDown = {}
+let keysDown = []
 let keysBlocked = false
 
-let activeStage = {}
 canvas.style.backgroundRepeat = "no-repeat"
 canvas.style.backgroundSize = "cover"
 
+document.addEventListener("keydown", (e) => {
+    keysDown[e.key]=true
+})
 
-ctx.fillRect(50,50,69,69)
-let deez = 0
+document.addEventListener("keyup", (e) => {
+    delete keysDown[e.key] 
+})
 
+const battefield = {
+    name: "Battlefield",
+    bgPath: "./assets/SSBB_Battlefield_Stage.webp",
+    basePlatforms: [
+        {
+            x: 192,
+            y:484,
+            w: 900,
+            h: 70
+        }
+    ]
+}
+
+//
+class Player {
+    x =  500
+    y =  0
+    w =  70
+    h =  85
+    speedX =  6
+    speedY = 0
+    kinectics = {
+        accelY: 0.1
+    }
+    percentage =  0
+    jump 
+    handleMovement(canvasObject = canvas, contextObject = ctx) {
+        let self = this
+        if("ArrowLeft" in keysDown && self.x > 0) {
+            self.x -= self.speedX
+            console.log("test")
+        }
+
+        if("ArrowRight" in keysDown && self.x+self.w < canvasObject.width) {
+            self.x += self.speedX
+        }
+    
+        if("ArrowUp" in keysDown && self.y > 0) {
+            self.y -= 1
+            self.speedY -= 1
+        }
+
+        if (self.y + self.h <= canvasObject.height) {
+            self.speedY = self.speedY + self.kinectics.accelY
+
+            self.y += self.speedY
+        } else {
+            self.y = canvasObject.height - self.h
+            self.speedY = 0
+        }
+        
+    }
+    draw(contextObject = ctx) {
+        let x = this.x
+        let y = this.y
+        let w = this.w
+        let h = this.h
+        contextObject.fillRect(x, y, w, h)
+    }
+}
+
+const player1 = new Player
+//
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
@@ -43,7 +109,7 @@ if (debugMode) {
  * @param {HTMLElement} targetCanvas Object containing the HTML Canvas element
  */
  function loadStage(areaContainer, targetCanvas = canvas) {
-    activeStage = areaContainer
+    activeArea = areaContainer
     targetCanvas.style.backgroundImage = `url(${areaContainer.bgPath})`
 }
 
@@ -68,13 +134,13 @@ if (debugMode) {
 loadStage(battefield)
 
 function main() {
-    for (let i = 0; i < activeStage.basePlatforms.length; i++) {
-        ctx.fillRect(activeStage.basePlatforms[i].x,activeStage.basePlatforms[i].y,activeStage.basePlatforms[i].w,activeStage.basePlatforms[i].h)
+    ctx.clearRect(0,0, canvas.width, canvas.height)
+    for (let i = 0; i < activeArea.basePlatforms.length; i++) {
+        ctx.fillRect(activeArea.basePlatforms[i].x,activeArea.basePlatforms[i].y,activeArea.basePlatforms[i].w,activeArea.basePlatforms[i].h)
     }
-    ctx.fillRect(50,50,69,69)
-
+    player1.draw(ctx)
+    player1.handleMovement()
     requestAnimationFrame(main)
 
 }
-
 main()
