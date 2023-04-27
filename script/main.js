@@ -1,8 +1,11 @@
 // Super Smash eachother in the ass Brothers - Chris YANG et Felix WU
 // Concentration Informatique - 2023-03-31
 
+import { getNewXPos, getNewYPos } from "./modules/physicalObject.js"
+
 
 const canvas = document.createElement("canvas")
+canvas.setAttribute("id", "mainCanvas");
 const ctx = canvas.getContext("2d")
 document.body.prepend(canvas)
 let debugMode = true
@@ -16,7 +19,7 @@ canvas.style.margin = "auto"
 let activeArea = {}
 /*deplacement du joueur*/
 let keysDown = []
-let keysBlocked = false
+let keysBlocked = []
 
 canvas.style.backgroundRepeat = "no-repeat"
 canvas.style.backgroundSize = "cover"
@@ -27,6 +30,7 @@ document.addEventListener("keydown", (e) => {
 
 document.addEventListener("keyup", (e) => {
     delete keysDown[e.key] 
+    delete keysBlocked[e.key]
 })
 
 const battefield = {
@@ -41,33 +45,7 @@ const battefield = {
         }
     ]
 }
-const physicalConstants = {
-    x_deceleration: 0.2, 
-    y_gravity: 0.198
-}
 
-function getNewXPos(pos, moveX, constants = physicalConstants) {
-    moveX.speed += moveX.accel
-    pos.x += moveX.speed
-    if ((moveX.speed + constants.x_deceleration <= 0 )) {
-        moveX.speed += constants.x_deceleration
-        console.log(moveX)
-    } else if ((moveX.speed - constants.x_deceleration >= 0)) {
-        moveX.speed -= constants.x_deceleration
-        console.log(moveX)
-    } else {
-        moveX.speed = 0
-    }
-    
-}
-function getNewYPos(pos, moveY, constants = physicalConstants) {
-    moveY.speed += moveY.accel
-    pos.y += moveY.speed
-    moveY.speed += constants.y_gravity
-    if (pos.y + pos.h >= canvas.height) {
-        moveY.speed = 0
-    }
-}
 
 
 //
@@ -87,12 +65,13 @@ class Player {
 
     movementY = {
         speed: 0,
-        accel: 0
+        accel: 0,
+        jumpCount: 0
     }
     mass = 10
     characterMaxSpeed = 5
     percentage =  0
-
+    maxJumpCount = 2
     handleMovement(canvasObject = canvas, contextObject = ctx) {
         const self = this
         if("ArrowLeft" in keysDown) {
@@ -113,7 +92,15 @@ class Player {
         } else {
             self.movementX.accel = 0
         }
-
+        console.log(keysDown)
+        
+        if ("ArrowUp" in keysDown) {
+            if (typeof keysBlocked["ArrowUp"] === 'undefined' && self.movementY.jumpCount <= self.maxJumpCount) {
+                self.movementY.speed = -6.5
+                self.movementY.jumpCount++
+            } 
+            keysBlocked["ArrowUp"] = true
+        }
 
         getNewXPos(self.position, self.movementX)
         getNewYPos(self.position, self.movementY)
