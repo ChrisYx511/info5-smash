@@ -22,7 +22,7 @@ canvas.style.backgroundRepeat = "no-repeat"
 canvas.style.backgroundSize = "cover"
 
 document.addEventListener("keydown", (e) => {
-    keysDown[e.key]=true
+    keysDown[e.key] = true
 })
 
 document.addEventListener("keyup", (e) => {
@@ -41,51 +41,91 @@ const battefield = {
         }
     ]
 }
+const physicalConstants = {
+    x_deceleration: 0.2, 
+    y_gravity: 0.198
+}
+
+function getNewXPos(pos, moveX, constants = physicalConstants) {
+    moveX.speed += moveX.accel
+    pos.x += moveX.speed
+    if ((moveX.speed + constants.x_deceleration <= 0 )) {
+        moveX.speed += constants.x_deceleration
+        console.log(moveX)
+    } else if ((moveX.speed - constants.x_deceleration >= 0)) {
+        moveX.speed -= constants.x_deceleration
+        console.log(moveX)
+    } else {
+        moveX.speed = 0
+    }
+    
+}
+function getNewYPos(pos, moveY, constants = physicalConstants) {
+    moveY.speed += moveY.accel
+    pos.y += moveY.speed
+    moveY.speed += constants.y_gravity
+    if (pos.y + pos.h >= canvas.height) {
+        moveY.speed = 0
+    }
+}
+
 
 //
 class Player {
-    x =  500
-    y =  0
-    w =  70
-    h =  85
-    speedX =  6
-    speedY = 0
-    kinectics = {
-        accelY: 0.1
+    position = {
+        x: 500,
+        y:  0,
+        w:  70,
+        h:  85
     }
+
+    movementX = {
+        speed: 0,
+        accel: 0
+
+    }
+
+    movementY = {
+        speed: 0,
+        accel: 0
+    }
+    mass = 10
+    characterMaxSpeed = 5
     percentage =  0
-    jump 
+
     handleMovement(canvasObject = canvas, contextObject = ctx) {
-        let self = this
-        if("ArrowLeft" in keysDown && self.x > 0) {
-            self.x -= self.speedX
-            console.log("test")
-        }
-
-        if("ArrowRight" in keysDown && self.x+self.w < canvasObject.width) {
-            self.x += self.speedX
-        }
-    
-        if("ArrowUp" in keysDown && self.y > 0) {
-            self.y -= 1
-            self.speedY -= 1
-        }
-
-        if (self.y + self.h <= canvasObject.height) {
-            self.speedY = self.speedY + self.kinectics.accelY
-
-            self.y += self.speedY
+        const self = this
+        if("ArrowLeft" in keysDown) {
+            if (self.movementX.speed <= -self.characterMaxSpeed) {
+                self.movementX.accel = -physicalConstants.x_deceleration
+            } else {
+                self.movementX.accel = -0.8
+            }
+            
+            console.log(self.movementX)
+        } else if("ArrowRight" in keysDown) {
+            if (self.movementX.speed >= self.characterMaxSpeed) {
+                self.movementX.accel = physicalConstants.x_deceleration
+            } else {
+                self.movementX.accel = 0.8
+            }
+            console.log(self.movementX)
         } else {
-            self.y = canvasObject.height - self.h
-            self.speedY = 0
+            self.movementX.accel = 0
         }
+
+
+        getNewXPos(self.position, self.movementX)
+        getNewYPos(self.position, self.movementY)
+
+    
         
     }
     draw(contextObject = ctx) {
-        let x = this.x
-        let y = this.y
-        let w = this.w
-        let h = this.h
+        let x = this.position.x
+        let y = this.position.y
+        let w = this.position.w
+        let h = this.position.h
         contextObject.fillRect(x, y, w, h)
     }
 }
@@ -98,11 +138,14 @@ function getCursorPosition(canvas, event) {
     const y = event.clientY - rect.top
     console.log("x: " + x + " y: " + y)
 }
+
 if (debugMode) {
+    console.log("INFO5-SMASH running in DEBUG MODE. DEBUG TOOLS ARE AVAIL.")
     canvas.addEventListener('mousedown', function(e) {
         getCursorPosition(canvas, e)
     })
 }
+
 /**
  * Loads a stage in the game
  * @param {Object} areaContainer Objet containing the standard layout and parameters of a given area
