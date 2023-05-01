@@ -1,4 +1,4 @@
-const physicalConstants = {
+export const physicalConstants = {
     x_deceleration: 0.2, 
     y_gravity: 0.198
 }

@@ -1,7 +1,7 @@
 // Super Smash eachother in the ass Brothers - Chris YANG et Felix WU
 // Concentration Informatique - 2023-03-31
 
-import { getNewXPos, getNewYPos } from "./modules/physicalObject.js"
+import { getNewXPos, getNewYPos, physicalConstants } from "./modules/physicalObject.js"
 
 
 const canvas = document.createElement("canvas")
