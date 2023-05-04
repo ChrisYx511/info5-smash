@@ -2,26 +2,14 @@
 // Concentration Informatique - 2023-03-31
 
 import Player, { physicalConstants, keysDown, keysBlocked} from "./modules/player.js"
+import {canvas, ctx, createCanvas} from "./modules/canvas.js"
+createCanvas()
 
-
-const canvas = document.createElement("canvas")
-canvas.setAttribute("id", "mainCanvas");
-const ctx = canvas.getContext("2d")
-document.body.prepend(canvas)
 let debugMode = true
-canvas.width = 1280
-canvas.height = 720
-canvas.style.backgroundColor = "lightblue"
-canvas.style.border = "2px black solid"
-canvas.style.display = "block"
-canvas.style.margin = "auto"
+
 // Movement and player
 let activeArea = {}
-/*deplacement du joueur*/
 
-
-canvas.style.backgroundRepeat = "no-repeat"
-canvas.style.backgroundSize = "cover"
 
 document.addEventListener("keydown", (e) => {
     keysDown[e.key] = true
@@ -93,11 +81,23 @@ function handleCollision(character, platform) {
     }
 }
 
-
-//
-
-
-
+/**
+ * Collision between objects
+ * @param {Object} objet1 
+ * @param {Object} objet2 
+ * @returns 
+ */
+function collision(objet1 = null, objet2 = null){
+    if (!objet1 || !objet2) {
+        return null
+    }
+	if (objet1.x + objet1.w >= objet2.x &&
+        objet1.x <= objet2.x + objet2.w && 
+        objet1.y + objet1.h >= objet2.y && 
+        objet1.y <= objet2.y + objet2.h) {
+		return true
+	}
+}
 
 const player1 = new Player
 const player2 = new Player
@@ -105,7 +105,8 @@ player2.position.x = 1000
 player2.controlSetNumber = 1
 loadStage(battefield)
 activeArea.players.push(player1, player2)
-//
+console.log(activeArea.players)
+
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
@@ -139,10 +140,12 @@ function main() {
             handleCollision(activeArea.players[j], activeArea.platforms[i])
         }
     }
-    player1.draw(ctx)
-    player1.handleMovement()
-    player2.draw(ctx)
-    player2.handleMovement()
+
+    for (let i = 0; i < activeArea.players.length; i++) {
+        activeArea.players[i].draw(ctx)
+        activeArea.players[i].handleMovement()
+    } 
+
     requestAnimationFrame(main)
 
 }
