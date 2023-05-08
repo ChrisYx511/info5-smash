@@ -42,8 +42,6 @@ function getNewYPos(pos, moveY, constants = physicalConstants) {
     moveY.speed += moveY.accel
     pos.y += moveY.speed
     moveY.speed += constants.y_gravity
-
-
 }
 
 export default class Player {
@@ -52,7 +50,8 @@ export default class Player {
         y:  0,
         w:  70,
         h:  85,
-        direction: "left"
+        direction: "left",
+        inAir: false
     }
 
     movementX = {
@@ -103,6 +102,8 @@ export default class Player {
         if(controlSets[self.controlSetNumber].left in keysDown) {
             if (self.movementX.speed <= -self.characterMaxSpeed) {
                 self.movementX.accel = -physicalConstants.x_deceleration
+            } else if (self.position.inAir) {
+                self.movementX.accel = -0.2
             } else {
                 self.movementX.accel = -0.8
             }
@@ -110,6 +111,8 @@ export default class Player {
         } else if(controlSets[self.controlSetNumber].right in keysDown) {
             if (self.movementX.speed >= self.characterMaxSpeed) {
                 self.movementX.accel = physicalConstants.x_deceleration
+            } else if (self.position.inAir) {
+                self.movementX.accel = 0.2
             } else {
                 self.movementX.accel = 0.8
             }

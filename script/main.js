@@ -3,6 +3,8 @@
 
 import Player, { physicalConstants, keysDown, keysBlocked} from "./modules/player.js"
 import {canvas, ctx, createCanvas} from "./modules/canvas.js"
+import * as stages from "./modules/stages.js"
+
 createCanvas()
 
 let musicBattlefield = new Audio("./assets/sound/music/battlefield.webm")
@@ -27,40 +29,6 @@ document.addEventListener("keyup", (e) => {
     delete keysBlocked[e.key]
 })
 
-const battefield = {
-    name: "Battlefield",
-    bgPath: "./assets/SSBB_Battlefield_Stage.webp",
-    platforms: [
-        {
-            x: 192,
-            y:484,
-            w: 900,
-            h: 70,
-            basePlatform: true
-        },
-        {
-            x: 305,
-            y: 345,
-            w: 195,
-            h: 15,
-            basePlatform: false
-        },
-        {
-            x: 783,
-            y: 345,
-            w: 195,
-            h: 15,
-            basePlatform: false
-        },        {
-            x: 543,
-            y: 215,
-            w: 195,
-            h: 15,
-            basePlatform: false
-        },
-    ],
-    players: []
-}
 
 function decomposeVector(norme, orientationInRad) {
     return {
@@ -77,14 +45,18 @@ function handleCollision(character, platform) {
             character.movementY.speed = 0
             character.movementY.jumpCount = 0
             character.position.y = platform.y - character.position.h
-
+            character.position.inAir = false
+            return null;
         }
         if ( character.position.y + character.position.h > platform.y + platform.h && character.position.y <= platform.y + platform.h &&
              platform.basePlatform === true) {
+                character.position.inAir = false
             if (character.movementY.speed < 0) {
                 character.movementY.speed = -character.movementY.speed
             }
+            return null;
         }
+                
     }
 }
 
@@ -169,7 +141,7 @@ const player1 = new Player
 const player2 = new Player
 player2.position.x = 1000
 player2.controlSetNumber = 1
-loadStage(battefield)
+loadStage(stages.battlefield)
 activeArea.players.push(player1, player2)
 console.log(activeArea.players)
 
