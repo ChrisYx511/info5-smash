@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        canvas{
+            border: 5px grey solid;
+            background-color: black;
+            margin: auto;
+            display: block;
+        }
+        #percentageBox{
+            width: 100px;
+            height: 60px;
+            background-color: aqua;
+            position: relative;
+            right: 200px;
+            bottom: 100px;
+        }
+        </style>
+</head>
+
+<body>
+    <canvas id="monCanvas">
+        <div id="percentageBox"></div>
+    </canvas>
+
+
+<script>
+
+var canvas = document.getElementById("monCanvas")
+var ctx = canvas.getContext("2d")
+canvas.width = 600
+canvas.height = 600 
+
+let player1 = {
+    x: 400,
+    y: 340,
+    w: 75,
+    h: 90,
+    color: "white",
+    speed:7
+}
+
+let player2 = {
+    x: 200,
+    y: 340,
+    w: 75,
+    h: 90,
+    color: "white"
+}
+
+let hitbox1 = {
+    x: player1.x + 37,
+    y: player1.y + 42,
+    r: 45,
+}
+
+let hitbox2 = {
+    x: player2.x + 37,
+    y: player2.y + 42,
+    r: 45,
+}
+
+function draw() {
+        ctx.fillStyle = player1.color
+        ctx.fillRect(player1.x, player1.y, player1.w, player1.h)
+
+        ctx.fillStyle = player2.color
+        ctx.fillRect(player2.x, player2.y, player2.w, player2.h)
+
+        ctx.beginPath()
+        ctx.arc(hitbox1.x, hitbox1.y, hitbox1.r, 0, Math.PI*2, true)
+        ctx.stroke()
+        ctx.fillStyle = "red"
+        ctx.fill()
+
+        ctx.beginPath()
+        ctx.arc(hitbox2.x, hitbox2.y, hitbox2.r, 0, Math.PI*2, true)
+        ctx.stroke()
+        ctx.fillStyle = "red"
+        ctx.fill()
+    }
+
+    var keysDown={
+}
+
+
+
+function hitboxCollisiosn(attackingPlayer, receivingPlayer){
+    if (distance < sumOfRadii){
+    hitbox1.color = "blue"
+    }
+    let a = attackingPlayer.hitbox.y - hitbox1.y
+let b = hitbox2.x - hitbox1.x
+let distance = Math.sqrt(a * a + b * b)
+let sumOdRadii = hitbox1.r + hitbox2.r 
+}
+
+document.addEventListener("keydown", function(e){
+	keysDown[e.keyCode]=true
+})
+document.addEventListener("keyup", function(e){
+	delete keysDown[e.keyCode]
+})
+
+function clavier(){
+
+	if(37 in keysDown && player1.x>0){
+		player1.x-=player1.speed
+        hitbox1.x = player1.x + 37
+	}
+	if(39 in keysDown && player1.x+player1.w<canvas.width){
+		player1.x+=player1.speed
+        hitbox1.x = player1.x + 37
+	}
+
+	/*if(38 in keysDown && player1.y>0){
+		player1.y-=player1.speed
+	}
+	if(40 in keysDown && player1.y+player1.h<canvas.height){
+		player1.y+=player1.speed
+	}*/
+
+	//wall(player, mur)
+}
+
+function gameLoop(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height)
+	draw()
+    clavier()
+    
+    requestAnimationFrame(gameLoop)
+}
+gameLoop()
+
+    </script>
+    
+</body>
+</html>

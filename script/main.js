@@ -5,14 +5,21 @@ import Player, { physicalConstants, keysDown, keysBlocked} from "./modules/playe
 import {canvas, ctx, createCanvas} from "./modules/canvas.js"
 createCanvas()
 
+let musicBattlefield = new Audio("./assets/sound/music/battlefield.webm")
+
 let debugMode = true
 
 // Movement and player
 let activeArea = {}
 
-
+canvas.addEventListener("click", () => {
+    musicBattlefield.play()
+    musicBattlefield.loop = true
+    musicBattlefield.volume = 0.20
+}, {once: true})
 document.addEventListener("keydown", (e) => {
     keysDown[e.key] = true
+    console.log(e.key)
 })
 
 document.addEventListener("keyup", (e) => {
@@ -99,6 +106,65 @@ function collision(objet1 = null, objet2 = null){
 	}
 }
 
+
+function hitboxCollision(hitbox1, hitbox2){
+    let a = hitbox2.y - hitbox1.y
+    let b = hitbox2.x - hitbox1.x
+    let distance = Math.sqrt(a * a + b * b)
+    let sumOfRadii = hitbox1.r + hitbox2.r 
+    if (distance < sumOfRadii){
+        return true
+    }
+    return false
+
+}
+
+function handleAttacks(attackingPlayer, defendingPlayer) {
+    for (let move in attackingPlayer.hitbox){
+        if (!attackingPlayer.hitbox[move].active){
+            continue;
+        }
+        console.log(move)
+        if (hitboxCollision(attackingPlayer.hitbox[move], defendingPlayer.hurtbox)) {
+            defendingPlayer.percentage += attackingPlayer.hitbox[move].dmg/6
+            defendingPlayer.percentage = Math.round(defendingPlayer.percentage * 10) / 10
+            switch (attackingPlayer.position.direction) {
+                case "left":
+                    defendingPlayer.movementX.accel = -0.2 * (defendingPlayer.percentage/20) - 0.9
+                    console.log(defendingPlayer.movementX.accel )
+                    setTimeout(() => {
+                        defendingPlayer.movementX.accel = 0
+                    }, 100)
+                    break;
+                case "right":
+                    defendingPlayer.movementX.accel = 0.2 * (defendingPlayer.percentage/10)
+                    setTimeout(() => {
+                        defendingPlayer.movementX.accel = 0
+                    }, 100)
+                    break;
+            }
+
+            defendingPlayer.movementY.accel = -0.4
+            setTimeout(() => {
+                defendingPlayer.movementY.accel = 0
+            }, 100)
+            console.log(defendingPlayer.percentage)
+        }
+    }
+}
+
+function drawPercentages() {
+    for (let i = 0; i < activeArea.players.length; i++) {
+        let d = 30*i + 86
+        ctx.font = "24px Arial"
+        ctx.fillStyle = "blue"
+        ctx.fillText(`Player ${(i + 1).toString()}: ${activeArea.players[i].percentage.toString()}%`, 1000, d)
+        ctx.fillStyle = "black"
+    }
+
+}
+
+
 const player1 = new Player
 const player2 = new Player
 player2.position.x = 1000
@@ -142,10 +208,17 @@ function main() {
     }
 
     for (let i = 0; i < activeArea.players.length; i++) {
+        activeArea.players[i].handleHitboxes()  
         activeArea.players[i].draw(ctx)
-        activeArea.players[i].handleMovement()
+        activeArea.players[i].handleMovement(canvas)
+        for (let j = 0; j < activeArea.players.length; j++){
+            if (i == j){
+                continue;
+            }
+            handleAttacks(activeArea.players[i], activeArea.players[j])
+        }
     } 
-
+    drawPercentages()
     requestAnimationFrame(main)
 
 }
