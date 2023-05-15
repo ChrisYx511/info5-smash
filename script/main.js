@@ -1,7 +1,8 @@
 // Super Smash eachother in the ass Brothers - Chris YANG et Felix WU
 // Concentration Informatique - 2023-03-31
 
-import Player, { physicalConstants, keysDown, keysBlocked} from "./modules/player.js"
+import * as characters from "./modules/character.js"
+import Player, { keysBlocked, keysDown } from "./modules/player.js"
 import {canvas, ctx, createCanvas} from "./modules/canvas.js"
 import * as stages from "./modules/stages.js"
 
@@ -61,6 +62,13 @@ function handleCollision(character, platform) {
                 
     }
 }
+console.log(Player)
+console.log(characters.Kirby)
+let test1 = new Player
+let test2 = new characters.Kirby
+
+console.log(test1)
+console.log(test2)
 
 /**
  * Collision between objects
@@ -145,8 +153,8 @@ function drawEndgame(){
 }
 
 
-const player1 = new Player
-const player2 = new Player
+const player1 = new characters.Kirby
+const player2 = new characters.Kirby
 player1.position.x = 375
 player2.position.x = 845
 player2.controlSetNumber = 1

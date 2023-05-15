@@ -9,14 +9,16 @@ export const controlSets = [
         down: "ArrowDown",
         left: "ArrowLeft",
         right: "ArrowRight",
-        attack: ","
+        attack: ",",
+        special: "."
     },
     {
         up: "w",
         down: "s",
         left: "a",
         right: "d",
-        attack: "g"
+        attack: "g",
+        special: "h"
     }
 ]
 export const physicalConstants = {
@@ -60,6 +62,9 @@ export default class Player {
 
     }
 
+    sprites = {
+    }
+
     movementY = {
         speed: 0,
         accel: 0,
@@ -72,6 +77,13 @@ export default class Player {
             y: this.position.y + this.position.h/2,
             r: 25,
             dmg: 3,
+            active: false
+        },
+        special: {
+            x: this.position.x + this.position.w/2,
+            y: this.position.y + this.position.h/2,
+            r: 45,
+            dmg: 15,
             active: false
         }
     }
@@ -168,6 +180,18 @@ export default class Player {
             delete keysBlocked[controlSets[self.controlSetNumber].attack]
             self.hitbox.jab.active = false
         }
+        if(controlSets[self.controlSetNumber].special in keysDown) {
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined') {
+                self.hitbox.special.active = true
+                setTimeout(() => {
+                    self.hitbox.special.active = false
+                }, 200)
+            } 
+            keysBlocked[controlSets[self.controlSetNumber].special] = true
+        } else {
+            delete keysBlocked[controlSets[self.controlSetNumber].special]
+            self.hitbox.special.active = false
+        }
     }
 
     draw(contextObject, color = undefined) {
@@ -179,12 +203,14 @@ export default class Player {
         if (color !== undefined) {
             contextObject.fillStyle = color
         }
-        contextObject.fillRect(x, y, w, h)
-        contextObject.fillStyle = "yellow"
+        if (self.sprites.std !== undefined) {
+            contextObject.drawImage(self.sprites.std, x, y, w, h)
+
+        } else {contextObject.fillRect(x, y, w, h)}
+        contextObject.strokeStyle = "yellow"
         contextObject.beginPath()
         contextObject.arc(self.hurtbox.x, self.hurtbox.y, self.hurtbox.r, 0, Math.PI*2, true)
         contextObject.stroke()
-        contextObject.fill()
         contextObject.fillStyle="black"
         for (let move in self.hitbox) {
             //console.log(self.hitbox[move])
