@@ -36,14 +36,12 @@ function getNewXPos(pos, moveX, constants = physicalConstants) {
     } else {
         moveX.speed = 0
     }
-    
 }
+
 function getNewYPos(pos, moveY, constants = physicalConstants) {
     moveY.speed += moveY.accel
     pos.y += moveY.speed
     moveY.speed += constants.y_gravity
-
-
 }
 
 export default class Player {
@@ -82,6 +80,7 @@ export default class Player {
         y: this.position.y + this.position.h/2,
         r: this.position.w/2
     }
+
     totalStocks = 3
     stocksLost = 0
     mass = 10
@@ -123,19 +122,21 @@ export default class Player {
             self.position.y = 35
             self.percentage = 0
             self.movementY.speed = 0
-            self.movementX.speed = 0    
+            self.movementX.speed = 0
+            self.stocksLost++
+            console.log(self.totalStocks)
+            console.log(self.stocksLost)
         }
+
         if (self.position.y + self.position.h < 0 || self.position.y > canvas.width) {
             self.position.x = 600
             self.position.y = 35
             self.percentage = 0
             self.movementY.speed = 0
             self.movementX.speed = 0
+            self.stocksLost++
         }
-        
     }
-
-
 
     handleHitboxes(){
         const self = this

@@ -9,6 +9,8 @@ let musicBattlefield = new Audio("./assets/sound/music/battlefield.webm")
 
 let debugMode = true
 
+let gameOver = false
+
 // Movement and player
 let activeArea = {}
 
@@ -158,20 +160,28 @@ function drawPercentages() {
         let d = 30*i + 86
         ctx.font = "24px Arial"
         ctx.fillStyle = "blue"
-        ctx.fillText(`Player ${(i + 1).toString()}: ${activeArea.players[i].percentage.toString()}%`, 1000, d)
+        ctx.fillText(`Player ${(i + 1).toString()}: ${activeArea.players[i].percentage.toString()}% Stocks: ${(activeArea.players[i].totalStocks - activeArea.players[i].stocksLost).toString()}`, 1000, d)
         ctx.fillStyle = "black"
     }
 
 }
 
+function drawEndgame(){
+    ctx.font = "350px Arial"
+    ctx.fillStyle = "green"
+    ctx.fillText("GAME", 140, 480)
+}
+
 
 const player1 = new Player
 const player2 = new Player
-player2.position.x = 1000
+player1.position.x = 375
+player2.position.x = 845
 player2.controlSetNumber = 1
 loadStage(battefield)
 activeArea.players.push(player1, player2)
 console.log(activeArea.players)
+
 
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
@@ -197,6 +207,14 @@ if (debugMode) {
     targetCanvas.style.backgroundImage = `url(${areaContainer.bgPath})`
 }
 
+function handleGameOver(){
+    for (let i = 0; i < activeArea.players.length; i++){
+        if (activeArea.players[i].totalStocks === activeArea.players[i].stocksLost){
+            gameOver = true
+            console.log(gameOver)
+        }
+    }
+}
 
 function main() {
     ctx.clearRect(0,0, canvas.width, canvas.height)
@@ -211,6 +229,7 @@ function main() {
         activeArea.players[i].handleHitboxes()  
         activeArea.players[i].draw(ctx)
         activeArea.players[i].handleMovement(canvas)
+        
         for (let j = 0; j < activeArea.players.length; j++){
             if (i == j){
                 continue;
@@ -219,7 +238,15 @@ function main() {
         }
     } 
     drawPercentages()
-    requestAnimationFrame(main)
-
+    handleGameOver()
+    if (gameOver == false){
+        requestAnimationFrame(main)
+    } else {
+        drawEndgame()
+        canvas.addEventListener("click", () => {
+            location.reload()
+        })
+    }
+    
 }
 main()
