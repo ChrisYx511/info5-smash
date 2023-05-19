@@ -2,9 +2,11 @@
 // Concentration Informatique - 2023-03-31
 
 import * as characters from "./modules/character.js"
-import Player, { keysBlocked, keysDown } from "./modules/player.js"
+import Player,{ keysBlocked, keysDown } from "./modules/player.js"
 import {canvas, ctx, createCanvas} from "./modules/canvas.js"
 import * as stages from "./modules/stages.js"
+import { hitboxCollision } from "./modules/helpers.js"
+
 
 createCanvas()
 
@@ -33,35 +35,7 @@ document.addEventListener("keyup", (e) => {
 })
 
 
-function decomposeVector(norme, orientationInRad) {
-    return {
-        x: norme*Math.cos(orientationInRad),
-        y: norme*Math.sin(orientationInRad)
-    }
-}
 
-function handleCollision(character, platform) {
-    if ( character.position.x + character.position.w > platform.x &&
-         character.position.x < platform.x + platform.w) {
-        if ( character.position.y < platform.y && character.position.y + character.position.h >= platform.y &&
-             character.position.y + character.position.h < platform.y + platform.h ) {
-            character.movementY.speed = 0
-            character.movementY.jumpCount = 0
-            character.position.y = platform.y - character.position.h
-            character.position.inAir = false
-            return null;
-        }
-        if ( character.position.y + character.position.h > platform.y + platform.h && character.position.y <= platform.y + platform.h &&
-             platform.basePlatform === true) {
-                character.position.inAir = false
-            if (character.movementY.speed < 0) {
-                character.movementY.speed = -character.movementY.speed
-            }
-            return null;
-        }
-                
-    }
-}
 console.log(Player)
 console.log(characters.Kirby)
 let test1 = new Player
@@ -70,36 +44,8 @@ let test2 = new characters.Kirby
 console.log(test1)
 console.log(test2)
 
-/**
- * Collision between objects
- * @param {Object} objet1 
- * @param {Object} objet2 
- * @returns 
- */
-function collision(objet1 = null, objet2 = null){
-    if (!objet1 || !objet2) {
-        return null
-    }
-	if (objet1.x + objet1.w >= objet2.x &&
-        objet1.x <= objet2.x + objet2.w && 
-        objet1.y + objet1.h >= objet2.y && 
-        objet1.y <= objet2.y + objet2.h) {
-		return true
-	}
-}
 
 
-function hitboxCollision(hitbox1, hitbox2){
-    let a = hitbox2.y - hitbox1.y
-    let b = hitbox2.x - hitbox1.x
-    let distance = Math.sqrt(a * a + b * b)
-    let sumOfRadii = hitbox1.r + hitbox2.r 
-    if (distance < sumOfRadii){
-        return true
-    }
-    return false
-
-}
 
 function handleAttacks(attackingPlayer, defendingPlayer) {
     for (let move in attackingPlayer.hitbox){
@@ -134,6 +80,30 @@ function handleAttacks(attackingPlayer, defendingPlayer) {
         }
     }
 }
+
+function handleCollision(character, platform) {
+    if ( character.position.x + character.position.w > platform.x &&
+         character.position.x < platform.x + platform.w) {
+        if ( character.position.y < platform.y && character.position.y + character.position.h >= platform.y &&
+             character.position.y + character.position.h < platform.y + platform.h ) {
+            character.movementY.speed = 0
+            character.movementY.jumpCount = 0
+            character.position.y = platform.y - character.position.h
+            character.position.inAir = false
+            return null;
+        }
+        if ( character.position.y + character.position.h > platform.y + platform.h && character.position.y <= platform.y + platform.h &&
+             platform.basePlatform === true) {
+                character.position.inAir = false
+            if (character.movementY.speed < 0) {
+                character.movementY.speed = -character.movementY.speed
+            }
+            return null;
+        }
+                
+    }
+}
+
 
 function drawPercentages() {
     for (let i = 0; i < activeArea.players.length; i++) {
