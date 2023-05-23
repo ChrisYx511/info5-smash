@@ -209,6 +209,7 @@ export default class Player {
         if(controlSets[self.controlSetNumber].special in keysDown) {
             if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined') {
                 for (let i = 0; i < self.hitbox.special.length; i++) {
+                    //TODO: Add Sprite changes
                     self.hitbox.special[i].active = true
                     setTimeout(() => {
                         self.hitbox.special[i].active = false
