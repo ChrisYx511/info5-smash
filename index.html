@@ -5,8 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Smash eachother in the ass Brothers</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="gameContainer" id="gameContainerWiiMenuSplash" onclick="startWiiMenu()">
+    </div>
+    <div class="gameContainer" id="gameContainerWiiMenu">
+        <video src="./assets/bg/wiiMenu/WiiMenuIntro.mp4"></video>
+        <div id="wiiMenuStartButton" onclick="loadIntroVideo()"></div>
+    </div>
+    <div class="gameContainer" id="gameContainerSplashMenu">
+
+    </div>
+    <div class="gameContainer" id="gameContainerIntroVideo">
+        <video src="assets/bg/splashMenu/introVideo.mp4"></video>
+    </div>
+    <div class="gameContainer" id="gameContainerMainMenu">
+
+    </div>
+    <div class="gameContainer" id="gameContainerBrawlMenu">
+
+    </div>
+    <div class="gameContainer" id="gameContainerCharacterSelect">
+
+    </div>
+    <div class="gameContainer" id="gameContainerStageSelect">
+
+    </div>
+    <script src="./script/htmlHelpers.js"></script>
     <script src="./script/main.js" type="module"></script>
 </body>
 </html>

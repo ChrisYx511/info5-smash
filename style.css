@@ -1,0 +1,33 @@
+.gameContainer {
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 1280px;
+    height: 720px;
+    background-color: lightblue;
+    display: none;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#gameContainerWiiMenuSplash {
+    background-image: url(./assets/bg/wiiMenu/wiiMenuSplash.png);
+    display: inherit;
+}
+
+#gameContainerWiiMenu {
+    background-image: url(./assets/bg/wiiMenu/wiiMenuStatic.png);
+}
+
+#wiiMenuStartButton {
+    position: absolute;
+    background-color: blue;
+    width: 320px;
+    height: 100px;
+    bottom: 60px;
+    right: 280px;
+}
+#wiiMenuStartButton:hover {
+    cursor: pointer;
+}

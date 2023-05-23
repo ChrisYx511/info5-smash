@@ -7,8 +7,7 @@ import {canvas, ctx, createCanvas} from "./modules/canvas.js"
 import * as stages from "./modules/stages.js"
 import { hitboxCollision } from "./modules/helpers.js"
 
-
-createCanvas()
+//createCanvas()
 
 let musicBattlefield = new Audio("./assets/sound/music/battlefield.webm")
 
@@ -19,11 +18,11 @@ let gameOver = false
 // Movement and player
 let activeArea = {}
 
-canvas.addEventListener("click", () => {
+/*canvas.addEventListener("click", () => {
     musicBattlefield.play()
     musicBattlefield.loop = true
     musicBattlefield.volume = 0.20
-}, {once: true})
+}, {once: true})*/
 document.addEventListener("keydown", (e) => {
     keysDown[e.key] = true
     console.log(e.key)

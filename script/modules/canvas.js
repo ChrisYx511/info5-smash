@@ -12,5 +12,5 @@ export function createCanvas() {
     canvas.style.margin = "auto"
     canvas.style.backgroundRepeat = "no-repeat"
     canvas.style.backgroundSize = "cover"
-
+    canvas.style.display = "none"
 }
