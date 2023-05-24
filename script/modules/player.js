@@ -114,8 +114,10 @@ export default class Player {
             if (typeof keysBlocked[controlSets[self.controlSetNumber].up] === 'undefined' && self.movementY.jumpCount < self.maxJumpCount) {
                 self.movementY.speed = -6.5
                 self.movementY.jumpCount++
+                //self.sprites.active = "jump"
             } 
             keysBlocked[controlSets[self.controlSetNumber].up] = true
+            //self.sprites.active = "std"
         }
         getNewXPos(self.position, self.movementX)
         getNewYPos(self.position, self.movementY)
@@ -195,7 +197,7 @@ export default class Player {
                     setTimeout(() => {
                         self.hitbox.jab[i].active = false
                         self.sprites.active = "std"
-                    }, 100)
+                    }, 500)
                 }
             } 
             keysBlocked[controlSets[self.controlSetNumber].attack] = true
@@ -209,10 +211,19 @@ export default class Player {
         if(controlSets[self.controlSetNumber].special in keysDown) {
             if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined') {
                 for (let i = 0; i < self.hitbox.special.length; i++) {
-                    //TODO: Add Sprite changes
+                    //TODO: Add Sprite changes... done?
                     self.hitbox.special[i].active = true
+                    switch (self.position.direction) {
+                        case "left":
+                            self.sprites.active = "specialLeft"
+                            break;
+                        case "right":
+                            self.sprites.active = "specialRight"
+                            break;
+                    }
                     setTimeout(() => {
                         self.hitbox.special[i].active = false
+                        self.sprites.active = "std"
                     }, 200)
                 }
             } 
