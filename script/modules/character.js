@@ -173,7 +173,7 @@ export class Crewmate extends Player {
         specialLeft: getImage(""),
         specialRight: getImage(""),
         //jump: getImage(""),
-        //active: "std"
+        active: "std"
     }
     hitbox = {
         jab: [

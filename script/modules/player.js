@@ -143,7 +143,6 @@ export default class Player {
             self.sprites.active = "right"
         } else {
             self.movementX.accel = 0
-            self.sprites.active = "std"
         }        
 
         if (self.position.x + self.position.w < 0 || self.position.x > canvas.width) {

@@ -126,7 +126,7 @@ function drawEndgame(){
 
 
 const player1 = new characters.Kirby
-const player2 = new characters.Kirby
+const player2 = new characters.Crewmate
 player1.position.x = 375
 console.log(player1.sprites[player1.sprites.active])
 player2.position.x = 845
