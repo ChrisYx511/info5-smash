@@ -16,15 +16,16 @@ export class Kirby extends Player {
         inAir: false
     }
     sprites = {
-        std: getImage("assets/KDCol_Kirby_KDL.webp"),
-        left: getImage("assets/SSBB_Battlefield_Stage.webp"),
-        right: getImage("assets/SSBB_Battlefield_Stage.webp"),
+        left: getImage(""),
+        right: getImage("assets/KDCol_Kirby_KDL.webp"),
+        runLeft: getImage("assets/SSBB_Battlefield_Stage.webp"),
+        runRight: getImage("assets/SSBB_Battlefield_Stage.webp"),
         jabLeft: getImage("assets/SSBB_Battlefield_Stage.webp"),
         jabRight: getImage("assets/SSBB_Battlefield_Stage.webp"),
         special: getImage(""),
         jump: getImage(""),
 //        smash: getImage(""),
-        active: "std"
+        active: "left"
     }
     hitbox = {
         jab: [
@@ -33,7 +34,7 @@ export class Kirby extends Player {
             y: this.position.y + this.position.h/2,
             xOffset: 0,
             yOffset:0,
-            r: 25,
+            r: 20,
             dmg: 3,
             active : false
         }
@@ -44,17 +45,17 @@ export class Kirby extends Player {
             y: this.position.y + this.position.h/2,
             xOffset: 0,
             yOffset: 0,
-            r: 35,
-            dmg: 10,
+            r: 30,
+            dmg: 0,
             active: false
         },
         {
             x: this.position.x + this.position.w/2,
             y: this.position.y + this.position.h/2,
             xOffset: 60,
-            yOffset: 20,
-            r: 25,
-            dmg: 10,
+            yOffset: 0,
+            r: 30,
+            dmg: 7,
             active: false
         }
     ]
@@ -74,14 +75,49 @@ export class Sanic extends Player {
         inAir: false
     }
     sprites = {
-        std: getImage("assets/characterSprites/sanic/sanic-std.png"),
-        left: getImage(""),
+        left: getImage("assets/characterSprites/sanic/sanic-left.png"),
         right: getImage(""),
+        runLeft: getImage(""),
+        runRight: getImage(""),
         jabLeft: getImage(""),
         jabRight: getImage(""),
         specialLeft: getImage(""),
         specialRight: getImage(""),
-        jump: (""),
+        jump: getImage(""),
+        active: "left"
+    }
+    hitbox = {
+        jab: [
+        {
+            x: this.position.x + this.position.w/2,
+            y: this.position.y + this.position.h/2,
+            xOffset: 0,
+            yOffset:0,
+            r: 15,
+            dmg: 3,
+            active : false
+        }
+        ],
+        special: [
+            {
+                x: this.position.x + this.position.w/2,
+                y: this.position.y + this.position.h/2,
+                xOffset: 0,
+                yOffset: 0,
+                r: 25,
+                dmg: 1,
+                active: false
+            },
+            {
+                x: this.position.x + this.position.w/2,
+                y: this.position.y + this.position.h/2,
+                xOffset: 50,
+                yOffset: 0,
+                r: 25,
+                dmg: 5,
+                active: false
+            }
+        ]
     }
     hurtbox = {
         x: this.position.x + this.position.w/2,
@@ -103,14 +139,16 @@ export class Lonk extends Player {
         inAir: false
     }
     sprites = {
-        std: getImage("assets/characterSprites/lonk/lonk-std.PNG"),
-        left: getImage(""),
+        left: getImage("assets/characterSprites/lonk/lonk-left.PNG"),
         right: getImage(""),
+        runLeft: getImage(""),
+        runRight: getImage(""),
         jabLeft: getImage(""),
         jabRight: getImage(""),
         specialLeft: getImage(""),
         specialRight: getImage(""),
-        jump: (""),
+        jump: getImage(""),
+        active: "left"
     }
     hitbox = {
         jab: [
@@ -120,7 +158,7 @@ export class Lonk extends Player {
             xOffset: 0,
             yOffset:0,
             r: 15,
-            dmg: 3,
+            dmg: 1,
             active : false
         },
         {
@@ -129,7 +167,7 @@ export class Lonk extends Player {
             xOffset: 30,
             yOffset:0,
             r: 15,
-            dmg: 3,
+            dmg: 4,
             active : false
         }
         ],
@@ -165,15 +203,16 @@ export class Crewmate extends Player {
         inAir: false
     }
     sprites =  {
-        std: getImage("assets/characterSprites/crewmate/crewmate-std.PNG"),
         left: getImage("assets/characterSprites/crewmate/crewmate-left.PNG"),
-        right: getImage("assets/characterSprites/crewmate/crewmate-right.PNG"),
+        right: getImage(""),
+        runLeft: getImage("assets/characterSprites/crewmate/crewmate-runLeft.PNG"),
+        runRight: getImage("assets/characterSprites/crewmate/crewmate-runRight.PNG"),
         jabLeft: getImage("assets/characterSprites/crewmate/crewmate-jabLeft.PNG"),
         jabRight: getImage("assets/characterSprites/crewmate/crewmate-jabRight.PNG"),
         specialLeft: getImage(""),
         specialRight: getImage(""),
-        //jump: getImage(""),
-        active: "std"
+        jump: getImage("assets/KDCol_Kirby_KDL.webp"),
+        active: "left"
     }
     hitbox = {
         jab: [
@@ -181,7 +220,7 @@ export class Crewmate extends Player {
                 x: this.position.x + this.position.w/2,
                 y: this.position.y + this.position.h/2,
                 xOffset: 0,
-                yOffset:0,
+                yOffset: 20,
                 r: 25,
                 dmg: 3,
                 active : false
@@ -236,6 +275,7 @@ export class Sans extends Player {
         specialLeft: getImage(""),
         specialRight: getImage(""),
         jump: (""),
+        active: "left"
     }
     hurtbox = {
         x: this.position.x + this.position.w/2,

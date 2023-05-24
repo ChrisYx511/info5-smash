@@ -110,17 +110,7 @@ export default class Player {
     controlSetNumber = 0
     handleMovement(canvas) {
         const self = this
-        if (controlSets[self.controlSetNumber].up in keysDown) {
-            if (typeof keysBlocked[controlSets[self.controlSetNumber].up] === 'undefined' && self.movementY.jumpCount < self.maxJumpCount) {
-                self.movementY.speed = -6.5
-                self.movementY.jumpCount++
-                //self.sprites.active = "jump"
-            } 
-            keysBlocked[controlSets[self.controlSetNumber].up] = true
-            //self.sprites.active = "std"
-        }
         getNewXPos(self.position, self.movementX)
-        getNewYPos(self.position, self.movementY)
         if(controlSets[self.controlSetNumber].left in keysDown) {
             if (self.movementX.speed <= -self.characterMaxSpeed) {
                 self.movementX.accel = -physicalConstants.x_deceleration
@@ -130,7 +120,7 @@ export default class Player {
                 self.movementX.accel = -0.8
             }
             self.position.direction = "left"
-            self.sprites.active = "left"
+            self.sprites.active = "runLeft"
         } else if(controlSets[self.controlSetNumber].right in keysDown) {
             if (self.movementX.speed >= self.characterMaxSpeed) {
                 self.movementX.accel = physicalConstants.x_deceleration
@@ -140,10 +130,31 @@ export default class Player {
                 self.movementX.accel = 0.8
             }
             self.position.direction = "right"
-            self.sprites.active = "right"
+            self.sprites.active = "runRight"
         } else {
             self.movementX.accel = 0
+            switch (self.position.direction){
+                case "left":
+                    self.sprites.active = "left"
+                    break;
+                case "right":
+                    self.sprites.active = "right"
+                    break;
+            }
         }        
+
+        if (controlSets[self.controlSetNumber].up in keysDown) {
+            if (self.movementY.jumpCount < self.maxJumpCount) {
+                self.sprites.active = `jump`
+            }
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].up] === 'undefined' && self.movementY.jumpCount < self.maxJumpCount) {
+                self.movementY.speed = -6.5
+                self.movementY.jumpCount++            
+            } 
+            keysBlocked[controlSets[self.controlSetNumber].up] = true
+            //self.sprites.active = "std"
+        }
+        getNewYPos(self.position, self.movementY)
 
         if (self.position.x + self.position.w < 0 || self.position.x > canvas.width) {
             self.position.x = 600
@@ -185,21 +196,22 @@ export default class Player {
             if (typeof keysBlocked[controlSets[self.controlSetNumber].attack] === 'undefined') {
                 for (let i = 0; i < self.hitbox.jab.length; i++) {
                     self.hitbox.jab[i].active = true
-                    switch (self.position.direction) {
-                        case "left":
-                            self.sprites.active = "jabLeft"
-                            break;
-                        case "right":
-                            self.sprites.active = "jabRight"
-                            break;
-                    }
+
                     setTimeout(() => {
                         self.hitbox.jab[i].active = false
-                        self.sprites.active = "std"
                     }, 500)
                 }
+
             } 
             keysBlocked[controlSets[self.controlSetNumber].attack] = true
+            switch (self.position.direction) {
+                case "left":
+                    self.sprites.active = "jabLeft"
+                    break;
+                case "right":
+                    self.sprites.active = "jabRight"
+                    break;
+            }
         } else {
             delete keysBlocked[controlSets[self.controlSetNumber].attack]
             for (let i = 0; i < self.hitbox.jab.length; i++) {
@@ -212,14 +224,6 @@ export default class Player {
                 for (let i = 0; i < self.hitbox.special.length; i++) {
                     //TODO: Add Sprite changes... done?
                     self.hitbox.special[i].active = true
-                    switch (self.position.direction) {
-                        case "left":
-                            self.sprites.active = "specialLeft"
-                            break;
-                        case "right":
-                            self.sprites.active = "specialRight"
-                            break;
-                    }
                     setTimeout(() => {
                         self.hitbox.special[i].active = false
                         self.sprites.active = "std"
@@ -227,6 +231,15 @@ export default class Player {
                 }
             } 
             keysBlocked[controlSets[self.controlSetNumber].special] = true
+            switch (self.position.direction) {
+                case "left":
+                    self.sprites.active = "specialLeft"
+                    break;
+                case "right":
+                    self.sprites.active = "specialRight"
+                    break;
+            }
+
         } else {
             delete keysBlocked[controlSets[self.controlSetNumber].special]
             for (let i = 0; i < self.hitbox.special.length; i++) {
