@@ -90,8 +90,7 @@ export default class Player {
             r: 45,
             dmg: 15,
             active: false
-        },
-    
+        }
         ]
     }
 
@@ -145,11 +144,11 @@ export default class Player {
 
         if (controlSets[self.controlSetNumber].up in keysDown) {
             if (self.movementY.jumpCount < self.maxJumpCount) {
-                self.sprites.active = `jump`
+                self.sprites.active = "jump"
             }
             if (typeof keysBlocked[controlSets[self.controlSetNumber].up] === 'undefined' && self.movementY.jumpCount < self.maxJumpCount) {
                 self.movementY.speed = -6.5
-                self.movementY.jumpCount++            
+                self.movementY.jumpCount++
             } 
             keysBlocked[controlSets[self.controlSetNumber].up] = true
             //self.sprites.active = "std"
