@@ -49,35 +49,37 @@ console.log(test2)
 
 function handleAttacks(attackingPlayer, defendingPlayer) {
     for (let move in attackingPlayer.hitbox){
-        if (!attackingPlayer.hitbox[move].active){
-            continue;
-        }
-        console.log(move)
-        if (hitboxCollision(attackingPlayer.hitbox[move], defendingPlayer.hurtbox)) {
-            defendingPlayer.percentage += attackingPlayer.hitbox[move].dmg/6
-            defendingPlayer.percentage = Math.round(defendingPlayer.percentage * 10) / 10
-            switch (attackingPlayer.position.direction) {
-                case "left":
-                    defendingPlayer.movementX.accel = -0.2 * (defendingPlayer.percentage/20) - 0.9
-                    console.log(defendingPlayer.movementX.accel )
-                    setTimeout(() => {
-                        defendingPlayer.movementX.accel = 0
-                    }, 100)
-                    break;
-                case "right":
-                    defendingPlayer.movementX.accel = 0.2 * (defendingPlayer.percentage/10)
-                    setTimeout(() => {
-                        defendingPlayer.movementX.accel = 0
-                    }, 100)
-                    break;
+        for (let i = 0; i < attackingPlayer.hitbox[move].length; i++) {
+            if (!attackingPlayer.hitbox[move][i].active){
+                continue;
             }
-
-            defendingPlayer.movementY.accel = -0.4
-            setTimeout(() => {
-                defendingPlayer.movementY.accel = 0
-            }, 100)
-            console.log(defendingPlayer.percentage)
+            console.log(move)
+            if (hitboxCollision(attackingPlayer.hitbox[move][i], defendingPlayer.hurtbox)) {
+                defendingPlayer.percentage += attackingPlayer.hitbox[move][i].dmg/6
+                defendingPlayer.percentage = Math.round(defendingPlayer.percentage * 10) / 10
+                switch (attackingPlayer.position.direction) {
+                    case "left":
+                        defendingPlayer.movementX.accel = -0.2 * (defendingPlayer.percentage/20) - 0.9 + (defendingPlayer.mass/10)
+                        setTimeout(() => {
+                            defendingPlayer.movementX.accel = 0
+                        }, 100)
+                        break;
+                    case "right":
+                        defendingPlayer.movementX.accel = 0.2 * (defendingPlayer.percentage/20) + 0.9 - (defendingPlayer.mass/10)
+                        setTimeout(() => {
+                            defendingPlayer.movementX.accel = 0
+                        }, 100)
+                        break;
+                }
+    
+                defendingPlayer.movementY.accel = -0.4
+                setTimeout(() => {
+                    defendingPlayer.movementY.accel = 0
+                }, 100)
+                console.log(defendingPlayer.percentage)
+            }
         }
+        
     }
 }
 
@@ -124,14 +126,14 @@ function drawEndgame(){
 
 
 const player1 = new characters.Kirby
-const player2 = new characters.Kirby
+const player2 = new characters.Sans
 player1.position.x = 375
+console.log(player1.sprites[player1.sprites.active])
 player2.position.x = 845
 player2.controlSetNumber = 1
 loadStage(stages.battlefield)
 activeArea.players.push(player1, player2)
 console.log(activeArea.players)
-
 
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()

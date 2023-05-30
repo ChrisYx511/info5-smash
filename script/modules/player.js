@@ -63,6 +63,7 @@ export default class Player {
     }
 
     sprites = {
+    
     }
 
     movementY = {
@@ -72,20 +73,25 @@ export default class Player {
     }
 
     hitbox = {
-        jab: {
+        jab: [{
             x: this.position.x + this.position.w/2,
             y: this.position.y + this.position.h/2,
+            xOffset: 0,
+            yOffset: 0,
             r: 25,
             dmg: 3,
             active: false
-        },
-        special: {
+        }],
+        special: [{
             x: this.position.x + this.position.w/2,
             y: this.position.y + this.position.h/2,
+            xOffset: 0,
+            yOffset: 0,
             r: 45,
             dmg: 15,
             active: false
         }
+        ]
     }
 
     hurtbox = {
@@ -103,15 +109,7 @@ export default class Player {
     controlSetNumber = 0
     handleMovement(canvas) {
         const self = this
-        if (controlSets[self.controlSetNumber].up in keysDown) {
-            if (typeof keysBlocked[controlSets[self.controlSetNumber].up] === 'undefined' && self.movementY.jumpCount < self.maxJumpCount) {
-                self.movementY.speed = -6.5
-                self.movementY.jumpCount++
-            } 
-            keysBlocked[controlSets[self.controlSetNumber].up] = true
-        }
         getNewXPos(self.position, self.movementX)
-        getNewYPos(self.position, self.movementY)
         if(controlSets[self.controlSetNumber].left in keysDown) {
             if (self.movementX.speed <= -self.characterMaxSpeed) {
                 self.movementX.accel = -physicalConstants.x_deceleration
@@ -121,6 +119,7 @@ export default class Player {
                 self.movementX.accel = -0.8
             }
             self.position.direction = "left"
+            self.sprites.active = "runLeft"
         } else if(controlSets[self.controlSetNumber].right in keysDown) {
             if (self.movementX.speed >= self.characterMaxSpeed) {
                 self.movementX.accel = physicalConstants.x_deceleration
@@ -130,9 +129,31 @@ export default class Player {
                 self.movementX.accel = 0.8
             }
             self.position.direction = "right"
+            self.sprites.active = "runRight"
         } else {
             self.movementX.accel = 0
+            switch (self.position.direction){
+                case "left":
+                    self.sprites.active = "left"
+                    break;
+                case "right":
+                    self.sprites.active = "right"
+                    break;
+            }
         }        
+
+        if (controlSets[self.controlSetNumber].up in keysDown) {
+            if (self.movementY.jumpCount < self.maxJumpCount) {
+                //self.sprites.active = "jump"
+            }
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].up] === 'undefined' && self.movementY.jumpCount < self.maxJumpCount) {
+                self.movementY.speed = -6.5
+                self.movementY.jumpCount++
+            } 
+            keysBlocked[controlSets[self.controlSetNumber].up] = true
+            //self.sprites.active = "std"
+        }
+        getNewYPos(self.position, self.movementY)
 
         if (self.position.x + self.position.w < 0 || self.position.x > canvas.width) {
             self.position.x = 600
@@ -158,39 +179,71 @@ export default class Player {
     handleHitboxes(){
         const self = this
         for (let move in self.hitbox) {
-            if (self.position.direction == "left") {
-                self.hitbox[move].x = self.position.x
-            } else if (self.position.direction == "right") {
-                self.hitbox[move].x = self.position.x + self.position.w
+            for (let i = 0; i < self.hitbox[move].length; i++) {
+                if (self.position.direction == "left") {
+                    self.hitbox[move][i].x = self.position.x - self.hitbox[move][i].xOffset
+                } else if (self.position.direction == "right") {
+                    self.hitbox[move][i].x = self.position.x + self.position.w + self.hitbox[move][i].xOffset
+                }
+                self.hitbox[move][i].y = self.position.y + self.position.h/2 - self.hitbox[move][i].yOffset    
             }
-            self.hitbox[move].y = self.position.y + self.position.h/2
             //console.log(self.hitbox[move])
         }
         self.hurtbox.x = self.position.x + self.position.w/2
         self.hurtbox.y = self.position.y + self.position.h/2
         if(controlSets[self.controlSetNumber].attack in keysDown) {
             if (typeof keysBlocked[controlSets[self.controlSetNumber].attack] === 'undefined') {
-                self.hitbox.jab.active = true
-                setTimeout(() => {
-                    self.hitbox.jab.active = false
-                }, 100)
+                for (let i = 0; i < self.hitbox.jab.length; i++) {
+                    self.hitbox.jab[i].active = true
+
+                    setTimeout(() => {
+                        self.hitbox.jab[i].active = false
+                    }, 500)
+                }
+
             } 
             keysBlocked[controlSets[self.controlSetNumber].attack] = true
+            switch (self.position.direction) {
+                case "left":
+                    self.sprites.active = "jabLeft"
+                    break;
+                case "right":
+                    self.sprites.active = "jabRight"
+                    break;
+            }
         } else {
             delete keysBlocked[controlSets[self.controlSetNumber].attack]
-            self.hitbox.jab.active = false
+            for (let i = 0; i < self.hitbox.jab.length; i++) {
+                self.hitbox.jab[i].active = false
+            }
         }
+
         if(controlSets[self.controlSetNumber].special in keysDown) {
             if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined') {
-                self.hitbox.special.active = true
-                setTimeout(() => {
-                    self.hitbox.special.active = false
-                }, 200)
+                for (let i = 0; i < self.hitbox.special.length; i++) {
+                    //TODO: Add Sprite changes... done?
+                    self.hitbox.special[i].active = true
+                    setTimeout(() => {
+                        self.hitbox.special[i].active = false
+                        self.sprites.active = "std"
+                    }, 200)
+                }
             } 
             keysBlocked[controlSets[self.controlSetNumber].special] = true
+            switch (self.position.direction) {
+                case "left":
+                    self.sprites.active = "specialLeft"
+                    break;
+                case "right":
+                    self.sprites.active = "specialRight"
+                    break;
+            }
+
         } else {
             delete keysBlocked[controlSets[self.controlSetNumber].special]
-            self.hitbox.special.active = false
+            for (let i = 0; i < self.hitbox.special.length; i++) {
+                self.hitbox.special[i].active = false
+            }
         }
     }
 
@@ -203,27 +256,31 @@ export default class Player {
         if (color !== undefined) {
             contextObject.fillStyle = color
         }
-        if (self.sprites.std !== undefined) {
-            contextObject.drawImage(self.sprites.std, x, y, w, h)
+        if (self.sprites[self.sprites.active] !== undefined) {
+            contextObject.drawImage(self.sprites[self.sprites.active], x, y, w, h)
 
-        } else {contextObject.fillRect(x, y, w, h)}
-        contextObject.strokeStyle = "yellow"
+        } /*else {contextObject.fillRect(x, y, w, h)}
+        //contextObject.strokeStyle = "yellow"
         contextObject.beginPath()
         contextObject.arc(self.hurtbox.x, self.hurtbox.y, self.hurtbox.r, 0, Math.PI*2, true)
         contextObject.stroke()
-        contextObject.fillStyle="black"
+        //contextObject.fillStyle="black"
         for (let move in self.hitbox) {
             //console.log(self.hitbox[move])
-            if (!self.hitbox[move].active) {
+            for (let i = 0; i < self.hitbox[move].length; i++) {
+                console.log(self.hitbox[move][i])
+                if (!self.hitbox[move][i].active) {
+                    contextObject.fillStyle="black"
+                    continue;
+                }
+                contextObject.fillStyle = "red"
+                contextObject.beginPath()
+                contextObject.arc(self.hitbox[move][i].x, self.hitbox[move][i].y, self.hitbox[move][i].r, 0, Math.PI*2, true)
+                contextObject.stroke()
+                contextObject.fill()
                 contextObject.fillStyle="black"
-                continue;
             }
-            contextObject.fillStyle = "red"
-            contextObject.beginPath()
-            contextObject.arc(self.hitbox[move].x, self.hitbox[move].y, self.hitbox[move].r, 0, Math.PI*2, true)
-            contextObject.stroke()
-            contextObject.fill()
-            contextObject.fillStyle="black"
-        }
+
+        }*/
     }
 }
