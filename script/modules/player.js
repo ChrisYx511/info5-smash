@@ -58,8 +58,9 @@ export default class Player {
 
     movementX = {
         speed: 0,
-        accel: 0
-
+        accel: 0,
+        specialCooldown: false,
+        attackCooldown: false
     }
 
     sprites = {
@@ -188,14 +189,17 @@ export default class Player {
         self.hurtbox.x = self.position.x + self.position.w/2
         self.hurtbox.y = self.position.y + self.position.h/2
         if(controlSets[self.controlSetNumber].attack in keysDown) {
-            if (typeof keysBlocked[controlSets[self.controlSetNumber].attack] === 'undefined' && typeof keysDown[controlSets[self.controlSetNumber].special] === 'undefined') {
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].attack] === 'undefined' && typeof keysDown[controlSets[self.controlSetNumber].special] === 'undefined' && self.movementX.attackCooldown === false) {
                 for (let i = 0; i < self.hitbox.jab.length; i++) {
                     self.hitbox.jab[i].active = true
                     setTimeout(() => {
                         self.hitbox.jab[i].active = false
                     }, 500)
                 }
-
+                self.movementX.specialCooldown = true
+                setTimeout(() => {
+                    self.movementX.specialCooldown = false
+                },200)
             } 
             keysBlocked[controlSets[self.controlSetNumber].attack] = true
             switch (self.position.direction) {
@@ -214,14 +218,17 @@ export default class Player {
         }
 
         if(controlSets[self.controlSetNumber].special in keysDown) {
-            if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined' && typeof keysDown[controlSets[self.controlSetNumber].attack] === 'undefined') {
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined' && typeof keysDown[controlSets[self.controlSetNumber].attack] === 'undefined' && self.movementX.specialCooldown === false) {
                 for (let i = 0; i < self.hitbox.special.length; i++) {
-                    //TODO: Add Sprite changes... done?
                     self.hitbox.special[i].active = true
                     setTimeout(() => {
                         self.hitbox.special[i].active = false
                     }, 200)
                 }
+                self.movementX.specialCooldown = true
+                setTimeout(() => {
+                    self.movementX.specialCooldown = false
+                },500)
             } 
             keysBlocked[controlSets[self.controlSetNumber].special] = true
             switch (self.position.direction) {
@@ -231,7 +238,8 @@ export default class Player {
                 case "right":
                     self.sprites.active = "specialRight"
                     break;
-            }
+            }   
+
 
         } else {
             delete keysBlocked[controlSets[self.controlSetNumber].special]
@@ -253,9 +261,9 @@ export default class Player {
         if (self.sprites[self.sprites.active] !== undefined) {
             contextObject.drawImage(self.sprites[self.sprites.active], x, y, w, h)
 
-        } /*else {contextObject.fillRect(x, y, w, h)}
+        } else {contextObject.fillRect(x, y, w, h)}
         //contextObject.strokeStyle = "yellow"
-        contextObject.beginPath()
+        /*contextObject.beginPath()
         contextObject.arc(self.hurtbox.x, self.hurtbox.y, self.hurtbox.r, 0, Math.PI*2, true)
         contextObject.stroke()
         //contextObject.fillStyle="black"

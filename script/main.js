@@ -55,7 +55,7 @@ fdSelect.onclick = () => {
 
 
 
-let debugMode = true
+let debugMode = false
 
 let gameOver = false
 
@@ -88,34 +88,37 @@ function handleAttacks(attackingPlayer, defendingPlayer) {
                 defendingPlayer.percentage = Math.round(defendingPlayer.percentage * 10) / 10
                 switch (attackingPlayer.position.direction) {
                     case "left":
-                        defendingPlayer.movementX.accel = -0.2 * (defendingPlayer.percentage/20) - 0.9 + (defendingPlayer.mass/10)
+                        defendingPlayer.movementX.accel = (-0.2 * (defendingPlayer.percentage/20) - 0.9 + (defendingPlayer.mass/10)) * (attackingPlayer.hitbox[move][i].dmg / 6)
                         setTimeout(() => {
                             defendingPlayer.movementX.accel = 0
                         }, 100)
                         break;
                     case "right":
-                        defendingPlayer.movementX.accel = 0.2 * (defendingPlayer.percentage/20) + 0.9 - (defendingPlayer.mass/10)
+                        defendingPlayer.movementX.accel = (0.2 * (defendingPlayer.percentage/20) + 0.9 - (defendingPlayer.mass/10)) * (attackingPlayer.hitbox[move][i].dmg / 6)
                         setTimeout(() => {
                             defendingPlayer.movementX.accel = 0
                         }, 100)
                         break;
                 }
-    
-                defendingPlayer.movementY.accel = -0.4
+                switch (move) {
+                    case "jab":
+                        playSound(sfx.jabHit, 0.6)
+                        break;
+                    case "special":
+                        playSound(sfx.specialHit, 0.6)
+                        break;
+                }
+                defendingPlayer.movementY.accel = (-0.2 * (defendingPlayer.percentage/20) - 0.9 + (defendingPlayer.mass/10)) * (attackingPlayer.hitbox[move][i].dmg / 6) / 3
                 setTimeout(() => {
                     defendingPlayer.movementY.accel = 0
                 }, 100)
                 console.log(defendingPlayer.percentage)
             }
-            defendingPlayer.movementY.accel = -0.4
             setTimeout(() => {
                 defendingPlayer.movementY.accel = 0
             }, 100)
             console.log(defendingPlayer.percentage)
-            playSound(sfx.jabHit)
-        } else {
-            playSound(sfx.jabSwing)
-        }
+        } 
         
     }
 }
@@ -173,7 +176,7 @@ function drawPercentages() {
                 ctx.fillStyle = "orange"
                 break;
         }
-        ctx.fillText(`Player ${(i + 1).toString()}: ${activeArea.players[i].percentage.toString()}% Stocks: ${(activeArea.players[i].totalStocks - activeArea.players[i].stocksLost).toString()}`, 1000, d)
+        ctx.fillText(`Player ${(i + 1).toString()}: ${Math.floor(activeArea.players[i].percentage).toString()}% Stocks: ${(activeArea.players[i].totalStocks - activeArea.players[i].stocksLost).toString()}`, 1000, d)
         ctx.fillStyle = "black"
     }
 
@@ -225,12 +228,15 @@ function handleGameOver(){
             console.log(gameOver)
             if (activeArea.hasVideoBg) {
                 activeArea.bgVideo.pause()
+                activeArea.bgVideo.currentTime = 0
+            } else {
+                activeArea.music.pause()
+                activeArea.music.currentTime = 0
             }
             playSound(announcerVoices.game, 1)
         }
     }
 }
-
 function main() {
     ctx.clearRect(0,0, canvas.width, canvas.height)
     for (let i = 0; i < activeArea.platforms.length; i++) {
@@ -260,6 +266,7 @@ function main() {
         drawEndgame()
         canvas.addEventListener("click", () => {
             location.reload()
+            
         })
     }
     

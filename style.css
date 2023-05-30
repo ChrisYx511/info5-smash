@@ -84,29 +84,29 @@
     height: 90px;
 }
 
-#Kirby {
+#Crewmate {
     left: 220px;
     top: 145px;
 }
 
-#character2 {
+#Sanic {
     left: 324px;
     top: 145px;
 }
 
-#character3 {
+#Lonk {
     left: 429px;
     top: 145px;
 }
-#character4 {
+#Sans {
     left: 534px;
     top: 145px;
 }
-#character5 {
+#Kirby {
     left: 641px;
     top: 145px;
 }
-#character6 {
+#Bowser {
     left: 747px;
     top: 145px;
 }
@@ -118,6 +118,7 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
+
 
 #readyToFight {
     position: absolute;
@@ -137,4 +138,14 @@
     width: 140px;
     height: 50px;
     left: 170px;
+}
+
+#instructions {
+    font-family: sans-serif;
+    position: absolute;
+    width: 900px;
+    height: 200px;
+    left: 0;
+    right: 0;
+    margin: auto;
 }

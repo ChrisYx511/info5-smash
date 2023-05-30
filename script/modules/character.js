@@ -47,7 +47,7 @@ export class Kirby extends Player {
             xOffset: 0,
             yOffset: 0,
             r: 30,
-            dmg: 0,
+            dmg: 7,
             active: false
         }
     ]
@@ -222,7 +222,7 @@ export class Crewmate extends Player {
                 xOffset: 0,
                 yOffset: 25,
                 r: 15,
-                dmg: 8,
+                dmg: 9,
                 active: false
             }
         ]
@@ -328,7 +328,6 @@ export class Bowser extends Player {
         jabRight: getImage("assets/characterSprites/bowser64/bowser-jabRight.PNG"), 
         specialLeft: getImage("assets/characterSprites/bowser64/bowser-specialLeft.PNG"),
         specialRight: getImage("assets/characterSprites/bowser64/bowser-specialRight.PNG"),
-        jump: getImage("assets/KDCol_Kirby_KDL.webp"),
         active: "left"
     }
     hitbox = {

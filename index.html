@@ -19,28 +19,28 @@
     </div>
     <div class="gameContainer" id="gameContainerBrawlMenu">
         <div id="player1Box" onclick="changeCursor('P1'); choosingPlayer = 0">
-            <img src="./assets/cursors/P1.PNG" style="position:absolute; top: 20px; left: 20px">    
+            <img src="./assets/cursors/P1.PNG" style="position:absolute; top: 40px; right: 10px">    
         </div>
         <div id="player2Box" onclick="changeCursor('P2'); choosingPlayer = 1">
-            <img src="./assets/cursors/P2.PNG" style="position:absolute; top: 20px; left: 20px">    
+            <img src="./assets/cursors/P2.PNG" style="position:absolute; top: 40px; right: 10px">    
 
         </div>
-        <div class="characterOption" id="Kirby" onclick="defineCharacter(this.id);" onmouseover="playSound(sfx.hover)">
+        <div class="characterOption" id="Crewmate" onclick="defineCharacter(this.id);" onmouseover="playSound(sfx.hover)">
 
         </div>
-        <div class="characterOption" id="character2" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+        <div class="characterOption" id="Sanic" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
             
         </div>
-        <div class="characterOption" id="character3" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+        <div class="characterOption" id="Lonk" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
             
         </div>
-        <div class="characterOption" id="character4" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+        <div class="characterOption" id="Sans" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
             
         </div>
-        <div class="characterOption" id="character5" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+        <div class="characterOption" id="Kirby" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
             
         </div>
-        <div class="characterOption" id="character6" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+        <div class="characterOption" id="Bowser" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
             
         </div>
         <div id="readyToFight">
@@ -52,6 +52,22 @@
         <div id="fdSelect"></div>
     </div>
     <div class="gameContainer" id="gameContainerMainCanvas">
+    </div>
+    <div id="instructions">
+        <p>
+            Joueur 1 - 
+            Mouvements: Flèches - 
+            Attaque: Virgule (à droite de M) - 
+            Spécial: Point (à droite de virgule)
+        </p>
+        <p>Joueur 2 - 
+            Mouvement: WASD - 
+            Attaque: G - 
+            Spécial: H
+        </p>
+        <p>
+            NOTE: Ne pas appuyer CAPS LOCK / Shift, Utiliser la souris pour naviguer les menus
+        </p>
     </div>
     <script src="./script/htmlHelpers.js"></script>
     <script src="./script/main.js" type="module"></script>

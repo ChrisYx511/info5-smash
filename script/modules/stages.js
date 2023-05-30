@@ -10,7 +10,7 @@ function getVideo(src) {
 
 export const battlefield = {
     name: "Battlefield",
-    bgPath: "./assets/SSBB_Battlefield_Stage.webp",
+    bgPath: "./assets/bg/battlefield/battlefield.webp",
     music: new Audio("./assets/sound/music/battlefield.webm"),
     platforms: [
         {

@@ -1,3 +1,13 @@
+// Super Smash eachother in the ass Brothers
+// Fonctions en support du menu
+
+
+window.addEventListener("keydown", function(e) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);
+
 const wiiMenuStartButton = document.getElementById("wiiMenuStartButton")
 const gameContainerSplashMenu = document.getElementById('gameContainerSplashMenu')
 const gameContainerBrawlMenu = document.getElementById("gameContainerBrawlMenu")
@@ -17,7 +27,7 @@ const sfx = {
     blastzone: new Audio("./assets/sound/sfx/blastzone.wav"),
     click: new Audio("./assets/sound/sfx/click.wav"),
     hover: new Audio("./assets/sound/sfx/hover.wav"),
-    jabHit: new Audio("./assets/sound/sfx/jab-swing.wav"),
+    jabHit: new Audio("./assets/sound/sfx/jab-hit.wav"),
     jabSwing: new Audio("./assets/sound/sfx/jab-swing.wav"),
     specialHit: new Audio("./assets/sound/sfx/special-hit.wav"),
     specialSwing: new Audio("./assets/sound/sfx/special-swing.wav"),
@@ -43,7 +53,7 @@ function startWiiMenu() {
     wiiMenuStartButton.style.display = "none"
     setTimeout(() => {
         wiiMenuStartButton.style.display = "inherit"
-    }, 4000)
+    }, 1200)
     wiiMenuVideo.addEventListener("ended", ()=>{
         wiiMenuVideo.pause()
         wiiMenuVideo.style.display = "none"
@@ -52,6 +62,7 @@ function startWiiMenu() {
 }
 function loadIntroVideo() {
     menuProgress++
+    wiiMenuVideo.pause()
     document.getElementById('gameContainerWiiMenu').style.display = 'none'
     playSound(sfx.startGame)
     gameContainerSplashMenu.style.display = "inherit"
@@ -133,10 +144,10 @@ function defineCharacter(characterClass) {
     console.log(playerCharacterNames)
     switch (choosingPlayer) {
         case 0:
-            document.getElementById("player1Box").style.backgroundImage = `url(./assets/characters/characterSelectSprites/${characterClass}.png)`
+            document.getElementById("player1Box").style.backgroundImage = `url(./assets/characterSprites/characterSelectSprites/${characterClass}.png)`
             break;
         case 1:
-            document.getElementById("player2Box").style.backgroundImage = `url(./assets/characters/characterSelectSprites/${characterClass}.png)`
+            document.getElementById("player2Box").style.backgroundImage = `url(./assets/characterSprites/characterSelectSprites/${characterClass}.png)`
             break;
     }
     if (playerCharacterNames.length == 2 && !playerCharacterNames.includes(undefined)) {
