@@ -78,29 +78,35 @@ document.addEventListener("keyup", (e) => {
 
 function handleAttacks(attackingPlayer, defendingPlayer) {
     for (let move in attackingPlayer.hitbox){
-        if (!attackingPlayer.hitbox[move].active){
-            continue;
-        }
-        console.log(move)
-        if (hitboxCollision(attackingPlayer.hitbox[move], defendingPlayer.hurtbox)) {
-            defendingPlayer.percentage += attackingPlayer.hitbox[move].dmg/6
-            defendingPlayer.percentage = Math.round(defendingPlayer.percentage * 10) / 10
-            switch (attackingPlayer.position.direction) {
-                case "left":
-                    defendingPlayer.movementX.accel = -0.2 * (defendingPlayer.percentage/20) - 0.9
-                    console.log(defendingPlayer.movementX.accel )
-                    setTimeout(() => {
-                        defendingPlayer.movementX.accel = 0
-                    }, 100)
-                    break;
-                case "right":
-                    defendingPlayer.movementX.accel = 0.2 * (defendingPlayer.percentage/10)
-                    setTimeout(() => {
-                        defendingPlayer.movementX.accel = 0
-                    }, 100)
-                    break;
+        for (let i = 0; i < attackingPlayer.hitbox[move].length; i++) {
+            if (!attackingPlayer.hitbox[move][i].active){
+                continue;
             }
-
+            console.log(move)
+            if (hitboxCollision(attackingPlayer.hitbox[move][i], defendingPlayer.hurtbox)) {
+                defendingPlayer.percentage += attackingPlayer.hitbox[move][i].dmg/6
+                defendingPlayer.percentage = Math.round(defendingPlayer.percentage * 10) / 10
+                switch (attackingPlayer.position.direction) {
+                    case "left":
+                        defendingPlayer.movementX.accel = -0.2 * (defendingPlayer.percentage/20) - 0.9 + (defendingPlayer.mass/10)
+                        setTimeout(() => {
+                            defendingPlayer.movementX.accel = 0
+                        }, 100)
+                        break;
+                    case "right":
+                        defendingPlayer.movementX.accel = 0.2 * (defendingPlayer.percentage/20) + 0.9 - (defendingPlayer.mass/10)
+                        setTimeout(() => {
+                            defendingPlayer.movementX.accel = 0
+                        }, 100)
+                        break;
+                }
+    
+                defendingPlayer.movementY.accel = -0.4
+                setTimeout(() => {
+                    defendingPlayer.movementY.accel = 0
+                }, 100)
+                console.log(defendingPlayer.percentage)
+            }
             defendingPlayer.movementY.accel = -0.4
             setTimeout(() => {
                 defendingPlayer.movementY.accel = 0
@@ -110,6 +116,7 @@ function handleAttacks(attackingPlayer, defendingPlayer) {
         } else {
             playSound(sfx.jabSwing)
         }
+        
     }
 }
 
