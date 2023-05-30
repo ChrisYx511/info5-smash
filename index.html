@@ -5,8 +5,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Smash eachother in the ass Brothers</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="gameContainer" id="gameContainerWiiMenuSplash" onclick="startWiiMenu()">
+    </div>
+    <div class="gameContainer" id="gameContainerWiiMenu">
+        <video src="./assets/bg/wiiMenu/WiiMenuIntro.mp4"></video>
+        <div id="wiiMenuStartButton" onclick="loadIntroVideo()"></div>
+    </div>
+    <div class="gameContainer" id="gameContainerSplashMenu">
+        <video src="assets/bg/splashMenu/introVideo.mp4"></video>
+    </div>
+    <div class="gameContainer" id="gameContainerBrawlMenu">
+        <div id="player1Box" onclick="changeCursor('P1'); choosingPlayer = 0">
+            <img src="./assets/cursors/P1.PNG" style="position:absolute; top: 20px; left: 20px">    
+        </div>
+        <div id="player2Box" onclick="changeCursor('P2'); choosingPlayer = 1">
+            <img src="./assets/cursors/P2.PNG" style="position:absolute; top: 20px; left: 20px">    
+
+        </div>
+        <div class="characterOption" id="Kirby" onclick="defineCharacter(this.id);" onmouseover="playSound(sfx.hover)">
+
+        </div>
+        <div class="characterOption" id="character2" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+            
+        </div>
+        <div class="characterOption" id="character3" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+            
+        </div>
+        <div class="characterOption" id="character4" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+            
+        </div>
+        <div class="characterOption" id="character5" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+            
+        </div>
+        <div class="characterOption" id="character6" onclick="defineCharacter(this.id)" onmouseover="playSound(sfx.hover)">
+            
+        </div>
+        <div id="readyToFight">
+            <div id="startGameButton" onclick="loadStageSelect()"></div>
+        </div>
+    </div>
+    <div class="gameContainer" id="gameContainerStageSelect">
+        <div id="battlefieldSelect"></div>
+        <div id="fdSelect"></div>
+    </div>
+    <div class="gameContainer" id="gameContainerMainCanvas">
+    </div>
+    <script src="./script/htmlHelpers.js"></script>
     <script src="./script/main.js" type="module"></script>
 </body>
 </html>

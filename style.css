@@ -1,0 +1,140 @@
+.gameContainer {
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 1280px;
+    height: 720px;
+    background-color: lightblue;
+    display: none;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px black solid;
+}
+
+#gameContainerWiiMenuSplash {
+    background-image: url(./assets/bg/wiiMenu/wiiMenuSplash.png);
+    display: inherit;
+}
+
+#gameContainerWiiMenu {
+    background-image: url(./assets/bg/wiiMenu/wiiMenuStatic.png);
+}
+
+#wiiMenuStartButton {
+    position: absolute;
+    width: 320px;
+    height: 100px;
+    bottom: 60px;
+    right: 280px;
+}
+#wiiMenuStartButton:hover {
+    cursor: pointer;
+}
+
+#gameContainerSplashMenu {
+    background-image: url(./assets/bg/splashMenu/splashbg.png);
+}
+
+#gameContainerBrawlMenu {
+    background-image: url(./assets/bg/characterSelect/characterSelect.png);
+    cursor: url(./assets/cursors/P1.PNG), auto;
+}
+
+#player1Box {
+    position: absolute;
+    width: 200px;
+    height: 175px;
+    left: 195px;
+    bottom: 90px;
+}
+
+#player2Box {
+    position: absolute;
+    width: 200px;
+    height: 175px;
+    left: 430px;
+    bottom: 90px;
+}
+
+#gameContainerStageSelect {
+     background-image: url(./assets/bg/stageSelect/battlefieldSelect.png);
+     cursor: url(./assets/cursors/crosshair.png), auto;
+}
+
+#battlefieldSelect {
+    position: absolute;
+    width: 100px;
+    height: 85px;
+    left: 610px;
+    top: 90px;
+}
+
+#fdSelect {
+    position: absolute;
+    width: 100px;
+    height: 85px;
+    left: 740px;
+    top: 90px;
+}
+
+.characterOption {
+    position: absolute;
+    width: 100px;
+    height: 90px;
+}
+
+#Kirby {
+    left: 220px;
+    top: 145px;
+}
+
+#character2 {
+    left: 324px;
+    top: 145px;
+}
+
+#character3 {
+    left: 429px;
+    top: 145px;
+}
+#character4 {
+    left: 534px;
+    top: 145px;
+}
+#character5 {
+    left: 641px;
+    top: 145px;
+}
+#character6 {
+    left: 747px;
+    top: 145px;
+}
+#player1Box {
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+#player2Box {
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#readyToFight {
+    position: absolute;
+    width: 1280px;
+    height: 70px;
+    background-image: url(./assets/bg/characterSelect/readytofight.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: none;
+}
+
+#startGameButton {
+    position: absolute;
+    width: 140px;
+    height: 50px;
+    left: 170px;
+}

@@ -100,7 +100,7 @@ export default class Player {
         r: this.position.w/2
     }
 
-    totalStocks = 3
+    totalStocks = 5
     stocksLost = 0
     mass = 10
     characterMaxSpeed = 5
@@ -113,20 +113,16 @@ export default class Player {
         if(controlSets[self.controlSetNumber].left in keysDown) {
             if (self.movementX.speed <= -self.characterMaxSpeed) {
                 self.movementX.accel = -physicalConstants.x_deceleration
-            } else if (self.position.inAir) {
-                self.movementX.accel = -0.2
             } else {
-                self.movementX.accel = -0.8
+                self.movementX.accel = -0.6
             }
             self.position.direction = "left"
             self.sprites.active = "runLeft"
         } else if(controlSets[self.controlSetNumber].right in keysDown) {
             if (self.movementX.speed >= self.characterMaxSpeed) {
                 self.movementX.accel = physicalConstants.x_deceleration
-            } else if (self.position.inAir) {
-                self.movementX.accel = 0.2
             } else {
-                self.movementX.accel = 0.8
+                self.movementX.accel = 0.6
             }
             self.position.direction = "right"
             self.sprites.active = "runRight"
@@ -141,7 +137,6 @@ export default class Player {
                     break;
             }
         }        
-
         if (controlSets[self.controlSetNumber].up in keysDown) {
             if (self.movementY.jumpCount < self.maxJumpCount) {
                 //self.sprites.active = "jump"
@@ -155,28 +150,29 @@ export default class Player {
         }
         getNewYPos(self.position, self.movementY)
 
-        if (self.position.x + self.position.w < 0 || self.position.x > canvas.width) {
+        if (self.position.x + self.position.w < -10 || self.position.x > canvas.width + 10) {
+            playSound(sfx.blastzone, 0.75)
             self.position.x = 600
             self.position.y = 35
             self.percentage = 0
             self.movementY.speed = 0
             self.movementX.speed = 0
             self.stocksLost++
-            console.log(self.totalStocks)
-            console.log(self.stocksLost)
         }
 
-        if (self.position.y + self.position.h < 0 || self.position.y > canvas.width) {
+        if (self.position.y + self.position.h < -10 || self.position.y > canvas.width + 10) {
+            playSound(sfx.blastzone, 0.75)
             self.position.x = 600
             self.position.y = 35
             self.percentage = 0
             self.movementY.speed = 0
             self.movementX.speed = 0
             self.stocksLost++
+
         }
     }
 
-    handleHitboxes(){
+    handleHitboxes() {
         const self = this
         for (let move in self.hitbox) {
             for (let i = 0; i < self.hitbox[move].length; i++) {
@@ -192,10 +188,9 @@ export default class Player {
         self.hurtbox.x = self.position.x + self.position.w/2
         self.hurtbox.y = self.position.y + self.position.h/2
         if(controlSets[self.controlSetNumber].attack in keysDown) {
-            if (typeof keysBlocked[controlSets[self.controlSetNumber].attack] === 'undefined') {
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].attack] === 'undefined' && typeof keysDown[controlSets[self.controlSetNumber].special] === 'undefined') {
                 for (let i = 0; i < self.hitbox.jab.length; i++) {
                     self.hitbox.jab[i].active = true
-
                     setTimeout(() => {
                         self.hitbox.jab[i].active = false
                     }, 500)
@@ -219,13 +214,12 @@ export default class Player {
         }
 
         if(controlSets[self.controlSetNumber].special in keysDown) {
-            if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined') {
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined' && typeof keysDown[controlSets[self.controlSetNumber].attack] === 'undefined') {
                 for (let i = 0; i < self.hitbox.special.length; i++) {
                     //TODO: Add Sprite changes... done?
                     self.hitbox.special[i].active = true
                     setTimeout(() => {
                         self.hitbox.special[i].active = false
-                        self.sprites.active = "std"
                     }, 200)
                 }
             } 

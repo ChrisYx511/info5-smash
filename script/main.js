@@ -3,14 +3,57 @@
 
 import * as characters from "./modules/character.js"
 import Player,{ keysBlocked, keysDown } from "./modules/player.js"
-import {canvas, ctx, createCanvas} from "./modules/canvas.js"
+import {canvas, ctx, createCanvas, gameContainerMainCanvas} from "./modules/canvas.js"
 import * as stages from "./modules/stages.js"
 import { hitboxCollision } from "./modules/helpers.js"
 
+const battlefieldSelect = document.getElementById("battlefieldSelect")
+const fdSelect = document.getElementById("fdSelect")
+const gameContainerStageSelect = document.getElementById("gameContainerStageSelect")
 
-createCanvas()
 
-let musicBattlefield = new Audio("./assets/sound/music/battlefield.webm")
+battlefieldSelect.onmouseover = () => {
+    gameContainerStageSelect.style.backgroundImage = "url(./assets/bg/stageSelect/battlefieldSelect.png)"
+    playSound(sfx.hover)
+}
+fdSelect.onmouseover = () => {
+    gameContainerStageSelect.style.backgroundImage = "url(./assets/bg/stageSelect/fdSelect.png)"
+    playSound(sfx.hover)
+}
+battlefieldSelect.onclick = () => {
+    createCanvas()
+    loadStage(stages.battlefield)
+    menuMusic.pause()
+    stages.battlefield.music.play()
+    stages.battlefield.music.volume = 0.5
+    stages.battlefield.music.loop = true
+    document.getElementById("gameContainerStageSelect").style.display = "none"
+    gameContainerMainCanvas.style.display = "inherit"
+    const player1 = new characters[playerCharacterNames[0]]
+    const player2 = new characters[playerCharacterNames[1]]
+    player2.position.x = 375
+    player1.position.x = 845
+    player2.controlSetNumber = 1
+    activeArea.players.push(player1, player2)
+    main()
+}
+
+fdSelect.onclick = () => {
+    createCanvas()
+    loadStage(stages.finaldestination)
+    menuMusic.pause()
+    document.getElementById("gameContainerStageSelect").style.display = "none"
+    gameContainerMainCanvas.style.display = "inherit"
+    const player1 = new characters[playerCharacterNames[0]]
+    const player2 = new characters[playerCharacterNames[1]]
+    player2.position.x = 375
+    player1.position.x = 845
+    player2.controlSetNumber = 1
+    activeArea.players.push(player1, player2)
+    main()
+}
+
+
 
 let debugMode = true
 
@@ -19,11 +62,6 @@ let gameOver = false
 // Movement and player
 let activeArea = {}
 
-canvas.addEventListener("click", () => {
-    musicBattlefield.play()
-    musicBattlefield.loop = true
-    musicBattlefield.volume = 0.20
-}, {once: true})
 document.addEventListener("keydown", (e) => {
     keysDown[e.key] = true
     console.log(e.key)
@@ -34,15 +72,6 @@ document.addEventListener("keyup", (e) => {
     delete keysBlocked[e.key]
 })
 
-
-
-console.log(Player)
-console.log(characters.Kirby)
-let test1 = new Player
-let test2 = new characters.Kirby
-
-console.log(test1)
-console.log(test2)
 
 
 
@@ -78,6 +107,14 @@ function handleAttacks(attackingPlayer, defendingPlayer) {
                 }, 100)
                 console.log(defendingPlayer.percentage)
             }
+            defendingPlayer.movementY.accel = -0.4
+            setTimeout(() => {
+                defendingPlayer.movementY.accel = 0
+            }, 100)
+            console.log(defendingPlayer.percentage)
+            playSound(sfx.jabHit)
+        } else {
+            playSound(sfx.jabSwing)
         }
         
     }
@@ -86,21 +123,35 @@ function handleAttacks(attackingPlayer, defendingPlayer) {
 function handleCollision(character, platform) {
     if ( character.position.x + character.position.w > platform.x &&
          character.position.x < platform.x + platform.w) {
-        if ( character.position.y < platform.y && character.position.y + character.position.h >= platform.y &&
-             character.position.y + character.position.h < platform.y + platform.h ) {
+        if ( character.position.y <= platform.y && character.position.y + character.position.h >= platform.y &&
+             character.position.y + character.position.h <= platform.y + platform.h ) {
             character.movementY.speed = 0
             character.movementY.jumpCount = 0
             character.position.y = platform.y - character.position.h
-            character.position.inAir = false
-            return null;
         }
-        if ( character.position.y + character.position.h > platform.y + platform.h && character.position.y <= platform.y + platform.h &&
-             platform.basePlatform === true) {
-                character.position.inAir = false
+        if (character.position.y < platform.y && character.position.y + character.position.h > platform.y + platform.h &&
+            character.position.x + character.position.w > platform.x + platform.w && platform.basePlatform === true) {
             if (character.movementY.speed < 0) {
                 character.movementY.speed = -character.movementY.speed
             }
-            return null;
+            if (character.movementX.speed < 0) {
+                character.movementX.speed = -character.movementX.speed
+            }
+        }
+        if (character.position.y < platform.y && character.position.y + character.position.h > platform.y + platform.h &&
+            character.position.x < platform.x && platform.basePlatform === true) {
+            if (character.movementY.speed < 0) {
+                character.movementY.speed = -character.movementY.speed
+            }
+            if (character.movementX.speed > 0) {
+                character.movementX.speed = -character.movementX.speed
+            }
+        }
+        if ( character.position.y + character.position.h > platform.y + platform.h && character.position.y <= platform.y + platform.h &&
+             platform.basePlatform === true) {
+                if (character.movementY.speed < 0) {
+                    character.movementY.speed = -character.movementY.speed
+                }
         }
                 
     }
@@ -111,7 +162,17 @@ function drawPercentages() {
     for (let i = 0; i < activeArea.players.length; i++) {
         let d = 30*i + 86
         ctx.font = "24px Arial"
-        ctx.fillStyle = "blue"
+        switch (i) {
+            case 0:
+                ctx.fillStyle = "red"
+                break;
+            case 1:
+                ctx.fillStyle = "blue"
+                break;
+            default:
+                ctx.fillStyle = "orange"
+                break;
+        }
         ctx.fillText(`Player ${(i + 1).toString()}: ${activeArea.players[i].percentage.toString()}% Stocks: ${(activeArea.players[i].totalStocks - activeArea.players[i].stocksLost).toString()}`, 1000, d)
         ctx.fillStyle = "black"
     }
@@ -122,18 +183,10 @@ function drawEndgame(){
     ctx.font = "350px Arial"
     ctx.fillStyle = "green"
     ctx.fillText("GAME", 140, 480)
+    ctx.font = "50px Arial"
+    ctx.fillText("(Click anywhere to reset...)", 200, 600)
 }
 
-
-const player1 = new characters.Kirby
-const player2 = new characters.Sans
-player1.position.x = 375
-console.log(player1.sprites[player1.sprites.active])
-player2.position.x = 845
-player2.controlSetNumber = 1
-loadStage(stages.battlefield)
-activeArea.players.push(player1, player2)
-console.log(activeArea.players)
 
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
@@ -156,7 +209,13 @@ if (debugMode) {
  */
  function loadStage(areaContainer, targetCanvas = canvas) {
     activeArea = areaContainer
-    targetCanvas.style.backgroundImage = `url(${areaContainer.bgPath})`
+    if (areaContainer.hasVideoBg) {
+        document.getElementById("gameContainerMainCanvas").prepend(areaContainer.bgVideo)
+        areaContainer.bgVideo.play()
+        areaContainer.bgVideo.volume = 0.5
+    } else {
+        targetCanvas.style.backgroundImage = `url(${areaContainer.bgPath})`
+    }
 }
 
 function handleGameOver(){
@@ -164,6 +223,10 @@ function handleGameOver(){
         if (activeArea.players[i].totalStocks === activeArea.players[i].stocksLost){
             gameOver = true
             console.log(gameOver)
+            if (activeArea.hasVideoBg) {
+                activeArea.bgVideo.pause()
+            }
+            playSound(announcerVoices.game, 1)
         }
     }
 }
@@ -201,4 +264,3 @@ function main() {
     }
     
 }
-main()
