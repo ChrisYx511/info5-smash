@@ -1,6 +1,7 @@
 const wiiMenuStartButton = document.getElementById("wiiMenuStartButton")
 const gameContainerSplashMenu = document.getElementById('gameContainerSplashMenu')
 const gameContainerBrawlMenu = document.getElementById("gameContainerBrawlMenu")
+const gameContainerStageSelect = document.getElementById("gameContainerStageSelect")
 
 const menuMusic = new Audio("./assets/sound/music/menu.m4a")
 
@@ -14,14 +15,15 @@ function startWiiMenu() {
     document.getElementById('gameContainerWiiMenu').style.display = 'inherit'
     wiiMenuVideo.play()
     wiiMenuStartButton.style.display = "none"
+    setTimeout(() => {
+        wiiMenuStartButton.style.display = "inherit"
+    }, 4000)
     wiiMenuVideo.addEventListener("ended", ()=>{
         wiiMenuVideo.pause()
         wiiMenuVideo.style.display = "none"
-        wiiMenuStartButton.style.display = "inherit"
     })
     menuProgress++
 }
-
 function loadIntroVideo() {
     menuProgress++
     document.getElementById('gameContainerWiiMenu').style.display = 'none'
@@ -63,10 +65,27 @@ function loadIntroVideo() {
 
 }
 
+const player1Box = document.getElementById("player1Box")
+const player2Box = document.getElementById("player2Box")
+
 function loadMainMenu() {
     gameContainerSplashMenu.style.display = "none"
     gameContainerBrawlMenu.style.display = "inherit"
     menuProgress++
     menuMusic.play()
     menuMusic.loop = true
+}
+
+function changeCursor(cursor) {
+    gameContainerBrawlMenu.style.cursor = `url(./assets/cursors/${cursor}.PNG), auto`
+}
+
+function loadStageSelect() {
+    gameContainerBrawlMenu.style.display = "none"
+    gameContainerStageSelect.style.display = "inherit"
+}
+
+function skipToGame() {
+    document.getElementById("gameContainerWiiMenuSplash").style.display = "none"
+    loadStageSelect()
 }

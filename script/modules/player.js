@@ -105,7 +105,7 @@ export default class Player {
         const self = this
         if (controlSets[self.controlSetNumber].up in keysDown) {
             if (typeof keysBlocked[controlSets[self.controlSetNumber].up] === 'undefined' && self.movementY.jumpCount < self.maxJumpCount) {
-                self.movementY.speed = -6.5
+                self.movementY.speed = -5.5
                 self.movementY.jumpCount++
             } 
             keysBlocked[controlSets[self.controlSetNumber].up] = true
@@ -115,19 +115,15 @@ export default class Player {
         if(controlSets[self.controlSetNumber].left in keysDown) {
             if (self.movementX.speed <= -self.characterMaxSpeed) {
                 self.movementX.accel = -physicalConstants.x_deceleration
-            } else if (self.position.inAir) {
-                self.movementX.accel = -0.2
             } else {
-                self.movementX.accel = -0.8
+                self.movementX.accel = -0.6
             }
             self.position.direction = "left"
         } else if(controlSets[self.controlSetNumber].right in keysDown) {
             if (self.movementX.speed >= self.characterMaxSpeed) {
                 self.movementX.accel = physicalConstants.x_deceleration
-            } else if (self.position.inAir) {
-                self.movementX.accel = 0.2
             } else {
-                self.movementX.accel = 0.8
+                self.movementX.accel = 0.6
             }
             self.position.direction = "right"
         } else {

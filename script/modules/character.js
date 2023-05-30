@@ -18,7 +18,7 @@ export class Kirby extends Player {
     sprites = {
         std: getImage("assets/KDCol_Kirby_KDL.webp"),
     }
-    characterMaxSpeed = 10
+    characterMaxSpeed = 5
     
 }
 

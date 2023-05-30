@@ -3,13 +3,50 @@
 
 import * as characters from "./modules/character.js"
 import Player,{ keysBlocked, keysDown } from "./modules/player.js"
-import {canvas, ctx, createCanvas} from "./modules/canvas.js"
+import {canvas, ctx, createCanvas, gameContainerMainCanvas} from "./modules/canvas.js"
 import * as stages from "./modules/stages.js"
 import { hitboxCollision } from "./modules/helpers.js"
 
-//createCanvas()
+const battlefieldSelect = document.getElementById("battlefieldSelect")
+const fdSelect = document.getElementById("fdSelect")
+const gameContainerStageSelect = document.getElementById("gameContainerStageSelect")
+battlefieldSelect.onmouseover = () => {
+    gameContainerStageSelect.style.backgroundImage = "url(./assets/bg/stageSelect/battlefieldSelect.png)"
+}
+fdSelect.onmouseover = () => {
+    gameContainerStageSelect.style.backgroundImage = "url(./assets/bg/stageSelect/fdSelect.png)"
+}
+battlefieldSelect.onclick = () => {
+    createCanvas()
+    loadStage(stages.battlefield)
+    menuMusic.pause()
+    stages.battlefield.music.play()
+    stages.battlefield.music.loop = true
+    document.getElementById("gameContainerStageSelect").style.display = "none"
+    gameContainerMainCanvas.style.display = "inherit"
+    const player1 = new characters.Kirby
+    const player2 = new characters.Kirby
+    player1.position.x = 375
+    player2.position.x = 845
+    player2.controlSetNumber = 1
+    activeArea.players.push(player1, player2)
+    main()
+}
 
-let musicBattlefield = new Audio("./assets/sound/music/battlefield.webm")
+fdSelect.onclick = () => {
+    createCanvas()
+    loadStage(stages.finaldestination)
+    menuMusic.pause()
+    document.getElementById("gameContainerStageSelect").style.display = "none"
+    gameContainerMainCanvas.style.display = "inherit"
+    const player1 = new characters.Kirby
+    const player2 = new characters.Kirby
+    player1.position.x = 375
+    player2.position.x = 845
+    player2.controlSetNumber = 1
+    activeArea.players.push(player1, player2)
+    main()
+}
 
 let debugMode = true
 
@@ -18,11 +55,6 @@ let gameOver = false
 // Movement and player
 let activeArea = {}
 
-/*canvas.addEventListener("click", () => {
-    musicBattlefield.play()
-    musicBattlefield.loop = true
-    musicBattlefield.volume = 0.20
-}, {once: true})*/
 document.addEventListener("keydown", (e) => {
     keysDown[e.key] = true
     console.log(e.key)
@@ -33,15 +65,6 @@ document.addEventListener("keyup", (e) => {
     delete keysBlocked[e.key]
 })
 
-
-
-console.log(Player)
-console.log(characters.Kirby)
-let test1 = new Player
-let test2 = new characters.Kirby
-
-console.log(test1)
-console.log(test2)
 
 
 
@@ -83,21 +106,35 @@ function handleAttacks(attackingPlayer, defendingPlayer) {
 function handleCollision(character, platform) {
     if ( character.position.x + character.position.w > platform.x &&
          character.position.x < platform.x + platform.w) {
-        if ( character.position.y < platform.y && character.position.y + character.position.h >= platform.y &&
-             character.position.y + character.position.h < platform.y + platform.h ) {
+        if ( character.position.y <= platform.y && character.position.y + character.position.h >= platform.y &&
+             character.position.y + character.position.h <= platform.y + platform.h ) {
             character.movementY.speed = 0
             character.movementY.jumpCount = 0
             character.position.y = platform.y - character.position.h
-            character.position.inAir = false
-            return null;
         }
-        if ( character.position.y + character.position.h > platform.y + platform.h && character.position.y <= platform.y + platform.h &&
-             platform.basePlatform === true) {
-                character.position.inAir = false
+        if (character.position.y < platform.y && character.position.y + character.position.h > platform.y + platform.h &&
+            character.position.x + character.position.w > platform.x + platform.w && platform.basePlatform === true) {
             if (character.movementY.speed < 0) {
                 character.movementY.speed = -character.movementY.speed
             }
-            return null;
+            if (character.movementX.speed < 0) {
+                character.movementX.speed = -character.movementX.speed
+            }
+        }
+        if (character.position.y < platform.y && character.position.y + character.position.h > platform.y + platform.h &&
+            character.position.x < platform.x && platform.basePlatform === true) {
+            if (character.movementY.speed < 0) {
+                character.movementY.speed = -character.movementY.speed
+            }
+            if (character.movementX.speed > 0) {
+                character.movementX.speed = -character.movementX.speed
+            }
+        }
+        if ( character.position.y + character.position.h > platform.y + platform.h && character.position.y <= platform.y + platform.h &&
+             platform.basePlatform === true) {
+                if (character.movementY.speed < 0) {
+                    character.movementY.speed = -character.movementY.speed
+                }
         }
                 
     }
@@ -122,13 +159,7 @@ function drawEndgame(){
 }
 
 
-const player1 = new characters.Kirby
-const player2 = new characters.Kirby
-player1.position.x = 375
-player2.position.x = 845
-player2.controlSetNumber = 1
-loadStage(stages.battlefield)
-activeArea.players.push(player1, player2)
+
 console.log(activeArea.players)
 
 
@@ -153,7 +184,12 @@ if (debugMode) {
  */
  function loadStage(areaContainer, targetCanvas = canvas) {
     activeArea = areaContainer
-    targetCanvas.style.backgroundImage = `url(${areaContainer.bgPath})`
+    if (areaContainer.hasVideoBg) {
+        document.getElementById("gameContainerMainCanvas").prepend(areaContainer.bgVideo)
+        areaContainer.bgVideo.play()
+    } else {
+        targetCanvas.style.backgroundImage = `url(${areaContainer.bgPath})`
+    }
 }
 
 function handleGameOver(){
@@ -198,4 +234,3 @@ function main() {
     }
     
 }
-main()

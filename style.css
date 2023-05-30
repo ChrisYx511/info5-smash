@@ -23,7 +23,6 @@
 
 #wiiMenuStartButton {
     position: absolute;
-    background-color: blue;
     width: 320px;
     height: 100px;
     bottom: 60px;
@@ -33,6 +32,82 @@
     cursor: pointer;
 }
 
+#gameContainerSplashMenu {
+    background-image: url(./assets/bg/splashMenu/splashbg.png);
+}
+
 #gameContainerBrawlMenu {
     background-image: url(./assets/bg/characterSelect/characterSelect.png);
+    cursor: url(./assets/cursors/P1.PNG), auto;
+}
+
+#player1Box {
+    position: absolute;
+    width: 200px;
+    height: 175px;
+    left: 195px;
+    bottom: 90px;
+}
+
+#player2Box {
+    position: absolute;
+    width: 200px;
+    height: 175px;
+    left: 430px;
+    bottom: 90px;
+}
+
+#gameContainerStageSelect {
+     background-image: url(./assets/bg/stageSelect/battlefieldSelect.png);
+     cursor: url(./assets/cursors/crosshair.png), auto;
+}
+
+#battlefieldSelect {
+    position: absolute;
+    width: 100px;
+    height: 85px;
+    left: 610px;
+    top: 90px;
+}
+
+#fdSelect {
+    position: absolute;
+    width: 100px;
+    height: 85px;
+    left: 740px;
+    top: 90px;
+}
+
+.characterOption {
+    position: absolute;
+    width: 100px;
+    height: 90px;
+    background-color: blue;
+}
+
+#character1 {
+    left: 220px;
+    top: 145px;
+}
+
+#character2 {
+    left: 324px;
+    top: 145px;
+}
+
+#character3 {
+    left: 324px;
+    top: 145px;
+}
+#character4 {
+    left: 324px;
+    top: 145px;
+}
+#character5 {
+    left: 324px;
+    top: 145px;
+}
+#character6 {
+    left: 324px;
+    top: 145px;
 }
