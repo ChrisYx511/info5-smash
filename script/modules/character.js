@@ -18,13 +18,14 @@ export class Kirby extends Player {
     sprites = {
         left: getImage("assets/characterSprites/kirby/kirby-left.PNG"),
         right: getImage("assets/characterSprites/kirby/kirby-right.PNG"),
-        runLeft: getImage("assets/SSBB_Battlefield_Stage.webp"),
-        runRight: getImage("assets/SSBB_Battlefield_Stage.webp"),
+        runLeft: getImage("assets/characterSprites/kirby/kirby-jumpLeft.PNG"),
+        runRight: getImage("assets/characterSprites/kirby/kirby-jumpRight.PNG"),
         jabLeft: getImage("assets/characterSprites/kirby/kirby-jabLeft.PNG"),
         jabRight: getImage("assets/characterSprites/kirby/kirby-jabRight.PNG"),
-        special: getImage(""),
-        jump: getImage(""),
-//        smash: getImage(""),
+        specialLeft: getImage("assets/characterSprites/kirby/kirby-specialLeft.PNG"),
+        specialRight: getImage("assets/characterSprites/kirby/kirby-specialRight.PNG"),
+        //jumpLeft: getImage("assets/characterSprites/kirby/kirby-jumpLeft.PNG"),
+        //jumpRight: getImage("assets/characterSprites/kirby/kirby-jumpRight.PNG"),
         active: "left"
     }
     hitbox = {
@@ -48,21 +49,12 @@ export class Kirby extends Player {
             r: 30,
             dmg: 0,
             active: false
-        },
-        {
-            x: this.position.x + this.position.w/2,
-            y: this.position.y + this.position.h/2,
-            xOffset: 60,
-            yOffset: 0,
-            r: 30,
-            dmg: 7,
-            active: false
         }
     ]
     }
     characterMaxSpeed = 5
     maxJumpCount= 6
-    mass = 1
+    mass = 3
 }
 
 export class Sanic extends Player {
@@ -79,11 +71,10 @@ export class Sanic extends Player {
         right: getImage("assets/characterSprites/sanic/sanic-right.PNG"),
         runLeft: getImage("assets/characterSprites/sanic/sanic-runLeft.PNG"),
         runRight: getImage("assets/characterSprites/sanic/sanic-runRight.PNG"),
-        jabLeft: getImage(""),
-        jabRight: getImage(""),
+        jabLeft: getImage("assets/characterSprites/sanic/sanic-jabLeft.PNG"),
+        jabRight: getImage("assets/characterSprites/sanic/sanic-jabRight.PNG"),
         specialLeft: getImage("assets/characterSprites/sanic/sanic-specialLeft.PNG"),
         specialRight: getImage("assets/characterSprites/sanic/sanic-specialRight.PNG"),
-        jump: getImage(""),
         active: "left"
     }
     hitbox = {
@@ -91,7 +82,7 @@ export class Sanic extends Player {
         {
             x: this.position.x + this.position.w/2,
             y: this.position.y + this.position.h/2,
-            xOffset: 0,
+            xOffset: -10,
             yOffset:0,
             r: 20,
             dmg: 3,
@@ -115,9 +106,9 @@ export class Sanic extends Player {
         y: this.position.y + this.position.h/2,
         r: 32
     }
-    characterMaxSpeed = 10
+    characterMaxSpeed = 6
     maxJumpCount = 2
-    mass = 2
+    mass = 3
 }
 
 export class Lonk extends Player {
@@ -131,14 +122,13 @@ export class Lonk extends Player {
     }
     sprites = {
         left: getImage("assets/characterSprites/lonk/lonk-left.PNG"),
-        right: getImage(""),
-        runLeft: getImage(""),
-        runRight: getImage(""),
-        jabLeft: getImage(""),
-        jabRight: getImage(""),
-        specialLeft: getImage(""),
-        specialRight: getImage(""),
-        jump: getImage(""),
+        right: getImage("assets/characterSprites/lonk/lonk-right.PNG"),
+        runLeft: getImage("assets/characterSprites/lonk/lonk-runLeft.PNG"),
+        runRight: getImage("assets/characterSprites/lonk/lonk-runRight.PNG"),
+        jabLeft: getImage("assets/characterSprites/lonk/lonk-jabLeft.PNG"),
+        jabRight: getImage("assets/characterSprites/lonk/lonk-jabRight.PNG"),
+        specialLeft: getImage("assets/characterSprites/lonk/lonk-specialLeft.PNG"),
+        specialRight: getImage("assets/characterSprites/lonk/lonk-specialRight.PNG"),
         active: "left"
     }
     hitbox = {
@@ -146,7 +136,7 @@ export class Lonk extends Player {
         {
             x: this.position.x + this.position.w/2,
             y: this.position.y + this.position.h/2,
-            xOffset: 0,
+            xOffset: -15,
             yOffset:0,
             r: 15,
             dmg: 1,
@@ -155,7 +145,7 @@ export class Lonk extends Player {
         {
             x: this.position.x + this.position.w/2,
             y: this.position.y + this.position.h/2,
-            xOffset: 30,
+            xOffset: 0,
             yOffset:0,
             r: 15,
             dmg: 4,
@@ -166,9 +156,9 @@ export class Lonk extends Player {
             {
                 x: this.position.x + this.position.w/2,
                 y: this.position.y + this.position.h/2,
-                xOffset: 0,
+                xOffset: -50,
                 yOffset: 0,
-                r: 35,
+                r: 50,
                 dmg: 10,
                 active: false
             },
@@ -179,9 +169,9 @@ export class Lonk extends Player {
         y: this.position.y + this.position.h/2,
         r: 22
     }
-    characterMaxSpeed = 3
+    characterMaxSpeed = 4
     maxJumpCount = 2
-    mass = 3
+    mass = 4
 }
 
 export class Crewmate extends Player {
@@ -200,9 +190,8 @@ export class Crewmate extends Player {
         runRight: getImage("assets/characterSprites/crewmate/crewmate-runRight.PNG"),
         jabLeft: getImage("assets/characterSprites/crewmate/crewmate-jabLeft.PNG"),
         jabRight: getImage("assets/characterSprites/crewmate/crewmate-jabRight.PNG"),
-        specialLeft: getImage(""),
-        specialRight: getImage(""),
-        jump: getImage("assets/KDCol_Kirby_KDL.webp"),
+        specialLeft: getImage("assets/characterSprites/crewmate/crewmate-specialLeft.PNG"),
+        specialRight: getImage("assets/characterSprites/crewmate/crewmate-specialRight.PNG"),
         active: "left"
     }
     hitbox = {
@@ -221,19 +210,19 @@ export class Crewmate extends Player {
                 {
                 x: this.position.x + this.position.w/2,
                 y: this.position.y + this.position.h/2,
-                xOffset: 0,
-                yOffset: 0,
-                r: 35,
-                dmg: 10,
+                xOffset: -30,
+                yOffset: 10,
+                r: 20,
+                dmg: 2,
                 active: false
             },
             {
                 x: this.position.x + this.position.w/2,
                 y: this.position.y + this.position.h/2,
-                xOffset: 60,
-                yOffset: 20,
-                r: 25,
-                dmg: 10,
+                xOffset: 0,
+                yOffset: 25,
+                r: 15,
+                dmg: 8,
                 active: false
             }
         ]
@@ -245,7 +234,7 @@ export class Crewmate extends Player {
     }
     characterMaxSpeed = 5
     maxJumpCount = 3
-    mass = 2
+    mass = 3
 }
 
 export class Sans extends Player {
@@ -264,8 +253,8 @@ export class Sans extends Player {
         runRight: getImage("assets/characterSprites/sans/sans-runRight.PNG"),
         jabLeft: getImage("assets/characterSprites/sans/sans-jabLeft.PNG"),
         jabRight: getImage("assets/characterSprites/sans/sans-jabRight.PNG"),
-        specialLeft: getImage(""),
-        specialRight: getImage(""),
+        specialLeft: getImage("assets/characterSprites/sans/sans-specialLeft.PNG"),
+        specialRight: getImage("assets/characterSprites/sans/sans-specialRight.PNG"),
         jump: getImage(""),
         active: "left"
     }
@@ -295,7 +284,7 @@ export class Sans extends Player {
                 x: this.position.x + this.position.w/2,
                 y: this.position.y + this.position.h/2,
                 xOffset: -25,
-                yOffset: 0,
+                yOffset: -15,
                 r: 25,
                 dmg: 2,
                 active: false
@@ -303,10 +292,10 @@ export class Sans extends Player {
             {
                 x: this.position.x + this.position.w/2,
                 y: this.position.y + this.position.h/2,
-                xOffset: 20,
-                yOffset: 0,
-                r: 25,
-                dmg: 10,
+                xOffset: 10,
+                yOffset: -15,
+                r: 20,
+                dmg: 18,
                 active: false
             }
         ]
@@ -318,7 +307,7 @@ export class Sans extends Player {
     }
     characterMaxSpeed = 6
     maxJumpCount = 2
-    mass = 0.7
+    mass = 2
 }
 
 export class Bowser extends Player {
@@ -371,7 +360,7 @@ export class Bowser extends Player {
         y: this.position.y + this.position.h/2,
         r: 42
     }
-    characterMaxSpeed = 2
+    characterMaxSpeed = 3
     maxJumpCount = 2
     mass = 5
 }

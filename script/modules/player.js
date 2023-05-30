@@ -144,7 +144,7 @@ export default class Player {
 
         if (controlSets[self.controlSetNumber].up in keysDown) {
             if (self.movementY.jumpCount < self.maxJumpCount) {
-                self.sprites.active = "jump"
+                //self.sprites.active = "jump"
             }
             if (typeof keysBlocked[controlSets[self.controlSetNumber].up] === 'undefined' && self.movementY.jumpCount < self.maxJumpCount) {
                 self.movementY.speed = -6.5
@@ -259,12 +259,12 @@ export default class Player {
         if (self.sprites[self.sprites.active] !== undefined) {
             contextObject.drawImage(self.sprites[self.sprites.active], x, y, w, h)
 
-        } else {contextObject.fillRect(x, y, w, h)}
-        contextObject.strokeStyle = "yellow"
+        } /*else {contextObject.fillRect(x, y, w, h)}
+        //contextObject.strokeStyle = "yellow"
         contextObject.beginPath()
         contextObject.arc(self.hurtbox.x, self.hurtbox.y, self.hurtbox.r, 0, Math.PI*2, true)
         contextObject.stroke()
-        contextObject.fillStyle="black"
+        //contextObject.fillStyle="black"
         for (let move in self.hitbox) {
             //console.log(self.hitbox[move])
             for (let i = 0; i < self.hitbox[move].length; i++) {
@@ -281,6 +281,6 @@ export default class Player {
                 contextObject.fillStyle="black"
             }
 
-        }
+        }*/
     }
 }

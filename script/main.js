@@ -125,8 +125,8 @@ function drawEndgame(){
 }
 
 
-const player1 = new characters.Sanic
-const player2 = new characters.Lonk
+const player1 = new characters.Kirby
+const player2 = new characters.Sans
 player1.position.x = 375
 console.log(player1.sprites[player1.sprites.active])
 player2.position.x = 845
