@@ -94,7 +94,7 @@ export default class Player {
         r: this.position.w/2
     }
 
-    totalStocks = 3
+    totalStocks = 5
     stocksLost = 0
     mass = 10
     characterMaxSpeed = 5
@@ -130,24 +130,25 @@ export default class Player {
             self.movementX.accel = 0
         }        
 
-        if (self.position.x + self.position.w < 0 || self.position.x > canvas.width) {
+        if (self.position.x + self.position.w < -10 || self.position.x > canvas.width + 10) {
+            playSound(sfx.blastzone, 0.75)
             self.position.x = 600
             self.position.y = 35
             self.percentage = 0
             self.movementY.speed = 0
             self.movementX.speed = 0
             self.stocksLost++
-            console.log(self.totalStocks)
-            console.log(self.stocksLost)
         }
 
-        if (self.position.y + self.position.h < 0 || self.position.y > canvas.width) {
+        if (self.position.y + self.position.h < -10 || self.position.y > canvas.width + 10) {
+            playSound(sfx.blastzone, 0.75)
             self.position.x = 600
             self.position.y = 35
             self.percentage = 0
             self.movementY.speed = 0
             self.movementX.speed = 0
             self.stocksLost++
+
         }
     }
 
@@ -165,7 +166,7 @@ export default class Player {
         self.hurtbox.x = self.position.x + self.position.w/2
         self.hurtbox.y = self.position.y + self.position.h/2
         if(controlSets[self.controlSetNumber].attack in keysDown) {
-            if (typeof keysBlocked[controlSets[self.controlSetNumber].attack] === 'undefined') {
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].attack] === 'undefined' && typeof keysDown[controlSets[self.controlSetNumber].special] === 'undefined') {
                 self.hitbox.jab.active = true
                 setTimeout(() => {
                     self.hitbox.jab.active = false
@@ -177,7 +178,7 @@ export default class Player {
             self.hitbox.jab.active = false
         }
         if(controlSets[self.controlSetNumber].special in keysDown) {
-            if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined') {
+            if (typeof keysBlocked[controlSets[self.controlSetNumber].special] === 'undefined' && typeof keysDown[controlSets[self.controlSetNumber].attack] === 'undefined') {
                 self.hitbox.special.active = true
                 setTimeout(() => {
                     self.hitbox.special.active = false

@@ -82,10 +82,9 @@
     position: absolute;
     width: 100px;
     height: 90px;
-    background-color: blue;
 }
 
-#character1 {
+#Kirby {
     left: 220px;
     top: 145px;
 }
@@ -96,18 +95,46 @@
 }
 
 #character3 {
-    left: 324px;
+    left: 429px;
     top: 145px;
 }
 #character4 {
-    left: 324px;
+    left: 534px;
     top: 145px;
 }
 #character5 {
-    left: 324px;
+    left: 641px;
     top: 145px;
 }
 #character6 {
-    left: 324px;
+    left: 747px;
     top: 145px;
+}
+#player1Box {
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+#player2Box {
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#readyToFight {
+    position: absolute;
+    width: 1280px;
+    height: 70px;
+    background-image: url(./assets/bg/characterSelect/readytofight.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: none;
+}
+
+#startGameButton {
+    position: absolute;
+    width: 140px;
+    height: 50px;
+    left: 170px;
 }

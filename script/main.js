@@ -10,24 +10,29 @@ import { hitboxCollision } from "./modules/helpers.js"
 const battlefieldSelect = document.getElementById("battlefieldSelect")
 const fdSelect = document.getElementById("fdSelect")
 const gameContainerStageSelect = document.getElementById("gameContainerStageSelect")
+
+
 battlefieldSelect.onmouseover = () => {
     gameContainerStageSelect.style.backgroundImage = "url(./assets/bg/stageSelect/battlefieldSelect.png)"
+    playSound(sfx.hover)
 }
 fdSelect.onmouseover = () => {
     gameContainerStageSelect.style.backgroundImage = "url(./assets/bg/stageSelect/fdSelect.png)"
+    playSound(sfx.hover)
 }
 battlefieldSelect.onclick = () => {
     createCanvas()
     loadStage(stages.battlefield)
     menuMusic.pause()
     stages.battlefield.music.play()
+    stages.battlefield.music.volume = 0.5
     stages.battlefield.music.loop = true
     document.getElementById("gameContainerStageSelect").style.display = "none"
     gameContainerMainCanvas.style.display = "inherit"
-    const player1 = new characters.Kirby
-    const player2 = new characters.Kirby
-    player1.position.x = 375
-    player2.position.x = 845
+    const player1 = new characters[playerCharacterNames[0]]
+    const player2 = new characters[playerCharacterNames[1]]
+    player2.position.x = 375
+    player1.position.x = 845
     player2.controlSetNumber = 1
     activeArea.players.push(player1, player2)
     main()
@@ -39,14 +44,16 @@ fdSelect.onclick = () => {
     menuMusic.pause()
     document.getElementById("gameContainerStageSelect").style.display = "none"
     gameContainerMainCanvas.style.display = "inherit"
-    const player1 = new characters.Kirby
-    const player2 = new characters.Kirby
-    player1.position.x = 375
-    player2.position.x = 845
+    const player1 = new characters[playerCharacterNames[0]]
+    const player2 = new characters[playerCharacterNames[1]]
+    player2.position.x = 375
+    player1.position.x = 845
     player2.controlSetNumber = 1
     activeArea.players.push(player1, player2)
     main()
 }
+
+
 
 let debugMode = true
 
@@ -99,6 +106,9 @@ function handleAttacks(attackingPlayer, defendingPlayer) {
                 defendingPlayer.movementY.accel = 0
             }, 100)
             console.log(defendingPlayer.percentage)
+            playSound(sfx.jabHit)
+        } else {
+            playSound(sfx.jabSwing)
         }
     }
 }
@@ -145,7 +155,17 @@ function drawPercentages() {
     for (let i = 0; i < activeArea.players.length; i++) {
         let d = 30*i + 86
         ctx.font = "24px Arial"
-        ctx.fillStyle = "blue"
+        switch (i) {
+            case 0:
+                ctx.fillStyle = "red"
+                break;
+            case 1:
+                ctx.fillStyle = "blue"
+                break;
+            default:
+                ctx.fillStyle = "orange"
+                break;
+        }
         ctx.fillText(`Player ${(i + 1).toString()}: ${activeArea.players[i].percentage.toString()}% Stocks: ${(activeArea.players[i].totalStocks - activeArea.players[i].stocksLost).toString()}`, 1000, d)
         ctx.fillStyle = "black"
     }
@@ -156,11 +176,9 @@ function drawEndgame(){
     ctx.font = "350px Arial"
     ctx.fillStyle = "green"
     ctx.fillText("GAME", 140, 480)
+    ctx.font = "50px Arial"
+    ctx.fillText("(Click anywhere to reset...)", 200, 600)
 }
-
-
-
-console.log(activeArea.players)
 
 
 function getCursorPosition(canvas, event) {
@@ -187,6 +205,7 @@ if (debugMode) {
     if (areaContainer.hasVideoBg) {
         document.getElementById("gameContainerMainCanvas").prepend(areaContainer.bgVideo)
         areaContainer.bgVideo.play()
+        areaContainer.bgVideo.volume = 0.5
     } else {
         targetCanvas.style.backgroundImage = `url(${areaContainer.bgPath})`
     }
@@ -197,6 +216,10 @@ function handleGameOver(){
         if (activeArea.players[i].totalStocks === activeArea.players[i].stocksLost){
             gameOver = true
             console.log(gameOver)
+            if (activeArea.hasVideoBg) {
+                activeArea.bgVideo.pause()
+            }
+            playSound(announcerVoices.game, 1)
         }
     }
 }
