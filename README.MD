@@ -19,7 +19,7 @@ Some contents of the game may not be translated in English because it was origin
 ## Screenshots
 
 See screenshots folder!
-Screen Recordings: https://drive.google.com/drive/folders/1-O62kOUBrFzOSfwjQhsCJNkYFr4lixTb?usp=sharing
+Screen Recordings: https://drive.google.com/drive/folders/1-cS2V2S_KAmy7ZBPb-cAbs-9wCJI4xf5?usp=sharing
 
 ## Running Instructions
 
